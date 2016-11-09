@@ -6,6 +6,7 @@ import java.awt.event.*;
 import javax.swing.*;
 
 public class PicSaw extends JFrame {
+
     public static void main(String[] args) {
         PicSaw gameFrame = new PicSaw();
         gameFrame.setVisible(true);
@@ -14,8 +15,8 @@ public class PicSaw extends JFrame {
     public PicSaw () {
         Container pane;
 
-        setTitle     ("PicSaw - Image Puzzle Game");
-        setSize      (600,600);
+        setTitle("PicSaw - Image Puzzle Game");
+        setSize (600,600);
         setResizable (false);
         // centers the Frame
         setLocationRelativeTo(null);
@@ -30,6 +31,25 @@ public class PicSaw extends JFrame {
 
         mainMenuBar.add(new MainMenuItem("New"));
         mainMenuBar.add(new MainMenuItem("Item with submenu", new String[]{"Item 1", "Item 2", "Item 3"}));
+
+        // loading an image
+        java.net.URL imgURL = getClass().getResource("images/img1.jpeg");
+        ImageIcon imgIco = new ImageIcon(imgURL, "Image Description");
+
+        JLabel iconLabel = new JLabel(imgIco);
+
+        pane.add(iconLabel);
+
+    }
+
+    protected ImageIcon createImageIcon(String path, String description) {
+        java.net.URL imgURL = getClass().getResource(path);
+        if (imgURL != null) {
+            return new ImageIcon(imgURL, description);
+        } else {
+            System.err.println("Couldn't find file: " + path);
+            return null;
+        }
     }
 
     private class MainMenuItem extends JMenu {
