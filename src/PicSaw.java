@@ -6,6 +6,7 @@ import java.awt.event.*;
 import javax.swing.*;
 
 public class PicSaw extends JFrame {
+    private Container mainPane;
 
     public static void main(String[] args) {
         PicSaw gameFrame = new PicSaw();
@@ -13,18 +14,16 @@ public class PicSaw extends JFrame {
     }
 
     public PicSaw () {
-        Container pane;
-
         setTitle("PicSaw - Image Puzzle Game");
-        setSize (600,600);
-        setResizable (false);
+        setSize (630,600);
+        //setResizable (false);
         // centers the Frame
         setLocationRelativeTo(null);
 
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 
-        pane = getContentPane( );
-        pane.setLayout(new FlowLayout());
+        mainPane = getContentPane( );
+        mainPane.setLayout(new BoxLayout(mainPane, BoxLayout.Y_AXIS));
 
         JMenuBar mainMenuBar = new JMenuBar();
         setJMenuBar(mainMenuBar);
@@ -32,24 +31,44 @@ public class PicSaw extends JFrame {
         mainMenuBar.add(new MainMenuItem("New"));
         mainMenuBar.add(new MainMenuItem("Item with submenu", new String[]{"Item 1", "Item 2", "Item 3"}));
 
-        // loading an image
-        java.net.URL imgURL = getClass().getResource("images/img1.jpeg");
-        ImageIcon imgIco = new ImageIcon(imgURL, "Image Description");
+        JLabel titleLabel = new JLabel("Please select from the following images:");
 
-        JLabel iconLabel = new JLabel(imgIco);
+        titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        pane.add(iconLabel);
+        titleLabel.setFont(new Font(titleLabel.getName(), Font.PLAIN, 22));
+
+        mainPane.add(titleLabel);
+
+        mainPane.add(createImageGrid());
 
     }
 
-    protected ImageIcon createImageIcon(String path, String description) {
-        java.net.URL imgURL = getClass().getResource(path);
-        if (imgURL != null) {
-            return new ImageIcon(imgURL, description);
-        } else {
-            System.err.println("Couldn't find file: " + path);
-            return null;
-        }
+    private Container createImageGrid () {
+        Container imagePane = new Container();
+
+        imagePane.setLayout(new FlowLayout());
+
+        // loading an image
+        java.net.URL imgURL = getClass().getResource("images/img1.jpeg");
+        //ImageIcon imgIco = new ImageIcon(imgURL, "Image Description");
+
+        ImageIcon imgIco1 = new ImageIcon(new ImageIcon(imgURL).getImage().getScaledInstance(300, 200, Image.SCALE_DEFAULT));
+        ImageIcon imgIco2 = new ImageIcon(new ImageIcon(imgURL).getImage().getScaledInstance(300, 200, Image.SCALE_DEFAULT));
+        ImageIcon imgIco3 = new ImageIcon(new ImageIcon(imgURL).getImage().getScaledInstance(300, 200, Image.SCALE_DEFAULT));
+        ImageIcon imgIco4 = new ImageIcon(new ImageIcon(imgURL).getImage().getScaledInstance(300, 200, Image.SCALE_DEFAULT));
+
+
+        JLabel iconLabel1 = new JLabel(imgIco1);
+        JLabel iconLabel2 = new JLabel(imgIco2);
+        JLabel iconLabel3 = new JLabel(imgIco3);
+        JLabel iconLabel4 = new JLabel(imgIco4);
+
+        imagePane.add(iconLabel1);
+        imagePane.add(iconLabel2);
+        imagePane.add(iconLabel3);
+        imagePane.add(iconLabel4);
+
+        return imagePane;
     }
 
     private class MainMenuItem extends JMenu {
