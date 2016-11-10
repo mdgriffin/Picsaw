@@ -7,6 +7,7 @@ import javax.swing.*;
 
 public class PicSaw extends JFrame {
     private Container mainPane;
+    private Container imagePane;
     private String[] imageUrls = new String[]{"images/img1.jpg", "images/img2.jpg", "images/img3.jpg", "images/img4.jpg"};
     private JLabel[] imageLabels;
 
@@ -43,21 +44,14 @@ public class PicSaw extends JFrame {
 
         mainPane.add(createImageGrid());
 
-
-
     }
 
     private Container createImageGrid () {
-        //java.net.URL imgURL;
-
-        Container imagePane = new Container();
-        imagePane.setLayout(new FlowLayout());
-
         imageLabels = new JLabel[4];
+        ImageGridMouseEvent mouseEvent = new ImageGridMouseEvent();
 
-        // loading an image
-        //java.net.URL imgURL = getClass().getResource("images/img1.jpeg");
-        //ImageIcon imgIco = new ImageIcon(imgURL, "Image Description");
+        imagePane = new Container();
+        imagePane.setLayout(new FlowLayout());
 
         for (int i = 0; i < imageUrls.length; i++) {
             // loading an image
@@ -67,10 +61,36 @@ public class PicSaw extends JFrame {
 
             imageLabels[i] = new JLabel(imgIco);
 
+            imageLabels[i].setBorder(BorderFactory.createMatteBorder(5, 5, 5, 5, Color.white));
+            imageLabels[i].setCursor(new Cursor(Cursor.HAND_CURSOR));
+
+            imageLabels[i].addMouseListener(mouseEvent);
+
             imagePane.add(imageLabels[i]);
         }
 
         return imagePane;
+    }
+
+    private int getEventSourceLabelIndex (MouseEvent sourceEvent) {
+        for (int i = 0; i < imageLabels.length; i++) {
+            if (imageLabels[i] == sourceEvent.getSource()) {
+                return i;
+            }
+        }
+
+        return 0;
+    }
+
+    private class ImageGridMouseEvent extends MouseAdapter {
+        public void mouseEntered (MouseEvent e) {
+            imageLabels[getEventSourceLabelIndex(e)].setBorder(BorderFactory.createMatteBorder(5, 5, 5, 5, Color.red));
+
+        }
+
+        public void mouseExited (MouseEvent e) {
+            imageLabels[getEventSourceLabelIndex(e)].setBorder(BorderFactory.createMatteBorder(5, 5, 5, 5, Color.white));
+        }
     }
 
     private class MainMenuItem extends JMenu {
@@ -91,7 +111,5 @@ public class PicSaw extends JFrame {
             }
         }
     }
-
-
 
 }
