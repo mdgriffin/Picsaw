@@ -18,8 +18,8 @@ public class PicSaw extends JFrame {
 
     public PicSaw () {
         setTitle("PicSaw - Image Puzzle Game");
-        setSize (630,600);
-        //setResizable (false);
+        setSize (700,600);
+        setResizable (false);
         // centers the Frame
         setLocationRelativeTo(null);
 
@@ -35,15 +35,12 @@ public class PicSaw extends JFrame {
         mainMenuBar.add(new MainMenuItem("Item with submenu", new String[]{"Item 1", "Item 2", "Item 3"}));
 
         JLabel titleLabel = new JLabel("Please select from the following images:");
-
         titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-
         titleLabel.setFont(new Font(titleLabel.getName(), Font.PLAIN, 22));
-
+        titleLabel.setBorder(BorderFactory.createEmptyBorder(25, 0, 25, 0));
         mainPane.add(titleLabel);
 
         mainPane.add(createImageGrid());
-
     }
 
     private Container createImageGrid () {
@@ -83,6 +80,15 @@ public class PicSaw extends JFrame {
     }
 
     private class ImageGridMouseEvent extends MouseAdapter {
+        public void mousePressed (MouseEvent e) {
+            System.out.println("pressed");
+
+            ImagePuzzleFrame puzzle = new ImagePuzzleFrame(PicSaw.this, imageUrls[getEventSourceLabelIndex(e)]);
+            puzzle.setVisible(true);
+
+            PicSaw.this.setVisible(false);
+        }
+
         public void mouseEntered (MouseEvent e) {
             imageLabels[getEventSourceLabelIndex(e)].setBorder(BorderFactory.createMatteBorder(5, 5, 5, 5, Color.red));
 
