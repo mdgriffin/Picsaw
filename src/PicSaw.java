@@ -81,8 +81,6 @@ public class PicSaw extends JFrame {
 
     private class ImageGridMouseEvent extends MouseAdapter {
         public void mousePressed (MouseEvent e) {
-            System.out.println("pressed");
-
             ImagePuzzleFrame puzzle = new ImagePuzzleFrame(PicSaw.this, imageUrls[getEventSourceLabelIndex(e)]);
             puzzle.setVisible(true);
 
