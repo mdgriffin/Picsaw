@@ -7,6 +7,8 @@ import javax.swing.*;
 
 public class PicSaw extends JFrame {
     private Container mainPane;
+    private String[] imageUrls = new String[]{"images/img1.jpg", "images/img2.jpg", "images/img3.jpg", "images/img4.jpg"};
+    private JLabel[] imageLabels;
 
     public static void main(String[] args) {
         PicSaw gameFrame = new PicSaw();
@@ -41,32 +43,32 @@ public class PicSaw extends JFrame {
 
         mainPane.add(createImageGrid());
 
+
+
     }
 
     private Container createImageGrid () {
-        Container imagePane = new Container();
+        //java.net.URL imgURL;
 
+        Container imagePane = new Container();
         imagePane.setLayout(new FlowLayout());
 
+        imageLabels = new JLabel[4];
+
         // loading an image
-        java.net.URL imgURL = getClass().getResource("images/img1.jpeg");
+        //java.net.URL imgURL = getClass().getResource("images/img1.jpeg");
         //ImageIcon imgIco = new ImageIcon(imgURL, "Image Description");
 
-        ImageIcon imgIco1 = new ImageIcon(new ImageIcon(imgURL).getImage().getScaledInstance(300, 200, Image.SCALE_DEFAULT));
-        ImageIcon imgIco2 = new ImageIcon(new ImageIcon(imgURL).getImage().getScaledInstance(300, 200, Image.SCALE_DEFAULT));
-        ImageIcon imgIco3 = new ImageIcon(new ImageIcon(imgURL).getImage().getScaledInstance(300, 200, Image.SCALE_DEFAULT));
-        ImageIcon imgIco4 = new ImageIcon(new ImageIcon(imgURL).getImage().getScaledInstance(300, 200, Image.SCALE_DEFAULT));
+        for (int i = 0; i < imageUrls.length; i++) {
+            // loading an image
+            java.net.URL imgURL = getClass().getResource(imageUrls[i]);
+            //ImageIcon imgIco = new ImageIcon(imgURL, "Image Description");
+            ImageIcon imgIco = new ImageIcon(new ImageIcon(imgURL).getImage().getScaledInstance(300, 200, Image.SCALE_DEFAULT));
 
+            imageLabels[i] = new JLabel(imgIco);
 
-        JLabel iconLabel1 = new JLabel(imgIco1);
-        JLabel iconLabel2 = new JLabel(imgIco2);
-        JLabel iconLabel3 = new JLabel(imgIco3);
-        JLabel iconLabel4 = new JLabel(imgIco4);
-
-        imagePane.add(iconLabel1);
-        imagePane.add(iconLabel2);
-        imagePane.add(iconLabel3);
-        imagePane.add(iconLabel4);
+            imagePane.add(imageLabels[i]);
+        }
 
         return imagePane;
     }
