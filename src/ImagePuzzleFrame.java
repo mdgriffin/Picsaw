@@ -9,7 +9,7 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.URISyntaxException;
-import java.nio.file.*;
+import java.util.Random;
 
 public class ImagePuzzleFrame extends JFrame {
     PicSaw parent;
@@ -17,6 +17,8 @@ public class ImagePuzzleFrame extends JFrame {
     // TODO Set attributes from the constructor
     private int rows = 4;
     private  int cols = 4;
+    ImageSlice[] imageSlices = new ImageSlice[rows * cols];
+    //JLabel[] imageLabels = new JLabel[rows * cols];
 
     public ImagePuzzleFrame(PicSaw parent, String imageSrc) {
         this.parent = parent;
@@ -42,64 +44,67 @@ public class ImagePuzzleFrame extends JFrame {
         mainMenuBar.add(exitBtn);
 
         // splitting the image into chunks
+
         try {
             imageSplitter(imageSrc);
         } catch (Exception exc) {
             System.out.println("IO Exception");
         }
 
-        int chunks = rows * cols;
-        JLabel[] imageLabels = new JLabel[chunks];
-
-        for (int i = 0; i < chunks; i++) {
-            java.net.URL imgURL = getClass().getResource("images/chunk" + i + ".jpg");
-            ImageIcon imgIco = new ImageIcon(new ImageIcon(imgURL).getImage());
-
-            imageLabels[i] = new JLabel(imgIco);
-            mainPane.add(imageLabels[i]);
-            imageLabels[i].setCursor(new Cursor(Cursor.HAND_CURSOR));
+        for (int i = 0; i < imageSlices.length; i++) {
+            mainPane.add(imageSlices[i]);
+            imageSlices[i].setCursor(new Cursor(Cursor.HAND_CURSOR));
         }
-
     }
 
     private void imageSplitter (String imageSrc) throws IOException, URISyntaxException {
+        int[] randomSeq = randomIntSequence(rows * cols);
+
         File file = new File(getClass().getResource(imageSrc).toURI());
         FileInputStream fis = new FileInputStream(file);
         BufferedImage image = ImageIO.read(fis); //reading the image file
 
-        int chunks = rows * cols;
-
         int chunkWidth = image.getWidth() / cols;
         int chunkHeight = image.getHeight() / rows;
 
-        BufferedImage[] imgs = new BufferedImage[chunks];
+        BufferedImage[] bufferedImages = new BufferedImage[rows * cols];
 
-        int count = 0;
-
-        for (int x = 0; x < rows; x++) {
-            for (int y = 0; y < cols; y++) {
+        for (int i = 0, x = 0; x < rows; x++) {
+            for (int y = 0; y < cols; y++, i++) {
                 //Initialize the image array with image chunks
-                imgs[count] = new BufferedImage(chunkWidth, chunkHeight, image.getType());
+                bufferedImages[i] = new BufferedImage(chunkWidth, chunkHeight, image.getType());
 
                 // draws the image chunk
-                Graphics2D gr = imgs[count++].createGraphics();
+                Graphics2D gr = bufferedImages[i].createGraphics();
                 gr.drawImage(image, 0, 0, chunkWidth, chunkHeight, chunkWidth * y, chunkHeight * x, chunkWidth * y + chunkWidth, chunkHeight * x + chunkHeight, null);
                 gr.dispose();
 
-
+                // TODO Pass the x and y co-ordinates into the ImageSlice constructor
+                imageSlices[randomSeq[i]] = new ImageSlice(new ImageIcon(bufferedImages[i]), x, y);
             }
         }
 
-        //writing mini images into image files
-        // TODO Write image to file
-        // TODO Add the original name before the image (Must parse it from the imageSrc)
-        // file.getName() will return the file name, just need to remove the file
-        // TODO Check if the image chunks have already been created
+    }
 
-        for (int i = 0; i < imgs.length; i++) {
-            ImageIO.write(imgs[i], "jpg", new File(file.getParent(), "chunk" + i + ".jpg"));
+    /**
+     * Based on swap and shuffle methods in java.util.Collections
+     */
+    private static int[] randomIntSequence (int seqLen) {
+        int[] seq = new int[seqLen];
+        Random random = new Random();
+
+        for (int i = 0; i < seqLen; i++) {
+            seq[i] = i;
         }
 
+        for (int i = seqLen; i > 1; i--) {
+            int j = random.nextInt(i);
+            int temp = seq[i - 1];
+            seq[i - 1] = seq[j];
+            seq[j] = temp;
+        }
+
+        return seq;
     }
 
 
@@ -120,12 +125,8 @@ public class ImagePuzzleFrame extends JFrame {
             }
         }
 
-        public void menuDeselected(MenuEvent e) {
+        public void menuDeselected(MenuEvent e) {}
 
-        }
-
-        public void menuCanceled(MenuEvent e) {
-
-        }
+        public void menuCanceled(MenuEvent e) {}
     }
 }
