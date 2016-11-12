@@ -153,6 +153,15 @@ public class ImagePuzzleFrame extends JFrame {
         return -1;
     }
 
+    private boolean boardSolved () {
+        for (int i = 0; i < imageSlices.length; i++) {
+            if (!imageSlices[i].inCorrectPosition()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     /**
      * Based on swap and shuffle methods in java.util.Collections
      */
@@ -173,7 +182,6 @@ public class ImagePuzzleFrame extends JFrame {
 
         return seq;
     }
-
 
     private class ExitButtonMenuListener implements  MenuListener {
         public void menuSelected(MenuEvent e) {
