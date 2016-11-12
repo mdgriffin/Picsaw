@@ -87,15 +87,12 @@ public class ImagePuzzleFrame extends JFrame {
                 gr.dispose();
 
                 // TODO Pass the randomized x and y co-ordinates into the ImageSlice constructor
-                imageSlices[randomSeq[i]] = new ImageSlice(this, new ImageIcon(bufferedImages[i]), x, y);
+                imageSlices[randomSeq[i]] = new ImageSlice(this, new ImageIcon(bufferedImages[i]), x, y, randomSeq[i] % cols, randomSeq[i] / rows);
             }
         }
 
     }
 
-    // once both slices are set, then the source and destination should be set to null
-    // and then the board should reordered
-    // needs to check if the board is correct
     public void sliceSelected (ImageSlice slice) {
         if  (sourceSlice == null && destSlice == null) {
             sourceSlice = slice;
@@ -108,7 +105,6 @@ public class ImagePuzzleFrame extends JFrame {
             swapSlices();
 
             // remove the selected state
-            // TODO change method to selected(boolean)
             sourceSlice.setSelected(false);
             destSlice.setSelected(false);
 
