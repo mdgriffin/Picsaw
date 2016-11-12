@@ -1,6 +1,8 @@
 /**
  * Defines an Image Jigsaw puzzle
  */
+// TODO Images need to be resized to not be excessively large
+// TODO the size of frame needs to be set based on the aspect ratio of the image
 import javax.swing.*;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
@@ -12,13 +14,16 @@ import java.net.URISyntaxException;
 import java.util.Random;
 
 public class ImagePuzzleFrame extends JFrame {
+    private Container imagePane;
     PicSaw parent;
     JMenu exitBtn;
-    // TODO Set attributes from the constructor
+    // TODO Set row and col attributes from the constructor
     private int rows = 4;
     private  int cols = 4;
     ImageSlice[] imageSlices = new ImageSlice[rows * cols];
     //JLabel[] imageLabels = new JLabel[rows * cols];
+    private ImageSlice sourceSlice;
+    private ImageSlice destSlice;
 
     public ImagePuzzleFrame(PicSaw parent, String imageSrc) {
         this.parent = parent;
@@ -28,33 +33,35 @@ public class ImagePuzzleFrame extends JFrame {
         setResizable(false);
         // centers the Frame
         setLocationRelativeTo(null);
-
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 
         Container mainPane = getContentPane();
-        mainPane.setLayout(new FlowLayout());
 
         JMenuBar mainMenuBar = new JMenuBar();
         setJMenuBar(mainMenuBar);
 
         exitBtn = new JMenu("Exit");
-
         exitBtn.addMenuListener(new ExitButtonMenuListener());
-
         mainMenuBar.add(exitBtn);
 
-        // splitting the image into chunks
-
+        // splitting the image into slices
         try {
             imageSplitter(imageSrc);
         } catch (Exception exc) {
-            System.out.println("IO Exception");
+            System.out.println(exc);
         }
 
-        for (int i = 0; i < imageSlices.length; i++) {
-            mainPane.add(imageSlices[i]);
-            imageSlices[i].setCursor(new Cursor(Cursor.HAND_CURSOR));
-        }
+        imagePane = new Container();
+
+        FlowLayout fl = new FlowLayout();
+        fl.setVgap(0);
+        fl.setHgap(0);
+
+        imagePane.setLayout(fl);
+
+        mainPane.add(imagePane);
+
+        addSlicesToImagePane();
     }
 
     private void imageSplitter (String imageSrc) throws IOException, URISyntaxException {
@@ -79,17 +86,87 @@ public class ImagePuzzleFrame extends JFrame {
                 gr.drawImage(image, 0, 0, chunkWidth, chunkHeight, chunkWidth * y, chunkHeight * x, chunkWidth * y + chunkWidth, chunkHeight * x + chunkHeight, null);
                 gr.dispose();
 
-                // TODO Pass the x and y co-ordinates into the ImageSlice constructor
-                imageSlices[randomSeq[i]] = new ImageSlice(new ImageIcon(bufferedImages[i]), x, y);
+                // TODO Pass the randomized x and y co-ordinates into the ImageSlice constructor
+                imageSlices[randomSeq[i]] = new ImageSlice(this, new ImageIcon(bufferedImages[i]), x, y);
             }
         }
 
     }
 
+    // once both slices are set, then the source and destination should be set to null
+    // and then the board should reordered
+    // needs to check if the board is correct
+    public void sliceSelected (ImageSlice slice) {
+        if  (sourceSlice == null && destSlice == null) {
+            System.out.println("\n\nsetting source");
+            sourceSlice = slice;
+            sourceSlice.setSelected(true);
+        } else if (sourceSlice != null && destSlice == null) {
+            System.out.println("setting destination");
+            destSlice = slice;
+            destSlice.setSelected(true);
+
+            // both slices are set, we can now reorder board
+            swapSlices();
+
+            // remove the selected state
+            // TODO change method to selected(boolean)
+            sourceSlice.setSelected(false);
+            destSlice.setSelected(false);
+
+            // once the board is reordered
+            sourceSlice = null;
+            destSlice = null;
+
+            // finally check if the board is correct
+            // if correct, show a congratulation  message
+            // JOP
+        }
+    }
+
+    private void swapSlices () {
+        // source and destination slices are set
+        if (sourceSlice != null && destSlice != null) {
+            int sourceSliceIndex = getSliceIndex(sourceSlice);
+            int destSliceIndex = getSliceIndex(destSlice);
+
+            System.out.println("Swapping slices Before = " + getSliceIndex(sourceSlice)+ " & " + getSliceIndex(destSlice));
+
+            ImageSlice tempSlice = imageSlices[sourceSliceIndex];
+            imageSlices[sourceSliceIndex] = imageSlices[destSliceIndex];
+            imageSlices[destSliceIndex] = tempSlice;
+
+            System.out.println("Swapping slices After = " + getSliceIndex(sourceSlice)+ " & " + getSliceIndex(destSlice));
+
+            imagePane.removeAll();
+            addSlicesToImagePane();
+
+            imagePane.repaint();
+        }
+    }
+
+    private void addSlicesToImagePane () {
+        for (int i = 0; i < imageSlices.length; i++) {
+            imagePane.add(imageSlices[i]);
+            imageSlices[i].setCursor(new Cursor(Cursor.HAND_CURSOR));
+        }
+    }
+
+    private int getSliceIndex (ImageSlice slice) {
+        for (int i = 0; i < imageSlices.length; i++) {
+            if (slice == imageSlices[i]) {
+                return i;
+            }
+        }
+
+        // if we can't find the slice, return -1;
+        return -1;
+    }
+
     /**
      * Based on swap and shuffle methods in java.util.Collections
      */
-    private static int[] randomIntSequence (int seqLen) {
+    public static int[] randomIntSequence (int seqLen) {
         int[] seq = new int[seqLen];
         Random random = new Random();
 
