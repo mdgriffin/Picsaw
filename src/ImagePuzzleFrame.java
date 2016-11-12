@@ -98,11 +98,9 @@ public class ImagePuzzleFrame extends JFrame {
     // needs to check if the board is correct
     public void sliceSelected (ImageSlice slice) {
         if  (sourceSlice == null && destSlice == null) {
-            System.out.println("\n\nsetting source");
             sourceSlice = slice;
             sourceSlice.setSelected(true);
         } else if (sourceSlice != null && destSlice == null) {
-            System.out.println("setting destination");
             destSlice = slice;
             destSlice.setSelected(true);
 
@@ -130,13 +128,9 @@ public class ImagePuzzleFrame extends JFrame {
             int sourceSliceIndex = getSliceIndex(sourceSlice);
             int destSliceIndex = getSliceIndex(destSlice);
 
-            System.out.println("Swapping slices Before = " + getSliceIndex(sourceSlice)+ " & " + getSliceIndex(destSlice));
-
             ImageSlice tempSlice = imageSlices[sourceSliceIndex];
             imageSlices[sourceSliceIndex] = imageSlices[destSliceIndex];
             imageSlices[destSliceIndex] = tempSlice;
-
-            System.out.println("Swapping slices After = " + getSliceIndex(sourceSlice)+ " & " + getSliceIndex(destSlice));
 
             imagePane.removeAll();
             addSlicesToImagePane();
