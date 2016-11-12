@@ -8,17 +8,20 @@ public class ImageSlice extends JLabel {
     private int xPos;
     private int yPos;
     // TODO Set these attributes from constructor
-    //private int currentXPos;
-    //private int currentYPos;
+    private int currentXPos;
+    private int currentYPos;
     private ImagePuzzleFrame parent;
 
-    public ImageSlice (ImagePuzzleFrame parent, ImageIcon imagePiece, int xPos, int yPos) {
+    public ImageSlice (ImagePuzzleFrame parent, ImageIcon imagePiece, int xPos, int yPos, int currentXPos, int currentYPos) {
         super(imagePiece);
 
         this.parent = parent;
 
         this.xPos = xPos;
         this.yPos = yPos;
+
+        this.currentXPos = currentXPos;
+        this.currentYPos = currentYPos;
 
         this.setBorder(BorderFactory.createMatteBorder(5, 5, 5, 5, Color.white));
 
@@ -38,24 +41,19 @@ public class ImageSlice extends JLabel {
         }
     }
 
-    public int getxPos () {
-        return xPos;
-    }
-
-    public int getyPos () {
-        return yPos;
+    public void setCurrentPos (int currentXPos, int currentYPos) {
+        this.currentXPos = currentXPos;
+        this.currentYPos = currentYPos;
     }
 
     // TODO Uncomment and use to determine if all pieces are in their correct position
     // TODO Should this method be static?
-    /*
     public boolean inCorrectPosition () {
-        if (currentXPos = xPos && currentYPos == yPos) {
+        if (currentXPos == xPos && currentYPos == yPos) {
             return true;
         }
-        return false
+        return false;
     }
-    */
 
     private class ImageMouseEvent extends MouseAdapter {
 
