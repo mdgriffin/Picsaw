@@ -2,6 +2,8 @@
  * Defines an Image Jigsaw puzzle
  */
 // TODO the scaled image height should not exceed the height of the window - the frame borders
+import com.sun.codemodel.internal.JOp;
+
 import javax.swing.*;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
@@ -10,7 +12,6 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.URISyntaxException;
-import java.nio.Buffer;
 import java.util.Random;
 
 public class ImagePuzzleFrame extends JFrame {
@@ -19,8 +20,8 @@ public class ImagePuzzleFrame extends JFrame {
     PicSaw parent;
     JMenu exitBtn;
     // TODO Set row and col attributes from the constructor
-    private int rows = 4;
-    private  int cols = 4;
+    private int rows = 3;
+    private  int cols = 3;
     ImageSlice[] imageSlices = new ImageSlice[rows * cols];
     //JLabel[] imageLabels = new JLabel[rows * cols];
     private ImageSlice sourceSlice;
@@ -52,7 +53,7 @@ public class ImagePuzzleFrame extends JFrame {
 
         mainPane.add(imagePane);
 
-        // splitting the image into slices
+        // splitting the image into slices and generating the grid
         try {
             generatePuzzleGrid(imageSrc);
         } catch (Exception exc) {
@@ -65,12 +66,10 @@ public class ImagePuzzleFrame extends JFrame {
         setLocationRelativeTo(null);
     }
 
-    /**
-     * Based on code found here:
-     * http://kalanir.blogspot.ie/2010/02/how-to-split-image-into-chunks-java.html
-     */
     private void generatePuzzleGrid (java.net.URI imageSrc) throws IOException, URISyntaxException {
         int[] randomSeq = randomIntSequence(rows * cols);
+        GridBagConstraints gridConstraints = new GridBagConstraints();
+        BufferedImage[] bufferedImages = new BufferedImage[rows * cols];
 
         File file = new File(imageSrc);
         FileInputStream fis = new FileInputStream(file);
@@ -85,25 +84,19 @@ public class ImagePuzzleFrame extends JFrame {
         int srcSliceWidth = srcImage.getWidth() / cols;
         int srcSliceHeight = srcImage.getHeight() / rows;
 
-        BufferedImage[] bufferedImages = new BufferedImage[rows * cols];
 
-        for (int i = 0, x = 0; x < rows; x++) {
-            for (int y = 0; y < cols; y++, i++) {
+        for (int i = 0, y = 0; y < rows; y++) {
+            for (int x = 0; x < cols; x++, i++) {
                 bufferedImages[i] = new BufferedImage(sliceWidth, sliceHeight, srcImage.getType());
 
                 Graphics2D gr = bufferedImages[i].createGraphics();
-                gr.drawImage(srcImage, 0, 0, sliceWidth, sliceHeight, srcSliceWidth * y, srcSliceHeight * x, srcSliceWidth * y + srcSliceWidth, srcSliceHeight * x + srcSliceHeight, null);
+                gr.drawImage(srcImage, 0, 0, sliceWidth, sliceHeight, srcSliceWidth * x, srcSliceHeight * y, srcSliceWidth * x + srcSliceWidth, srcSliceHeight * y + srcSliceHeight, null);
                 gr.dispose();
 
-                //imageSlices[randomSeq[i]] = new ImageSlice(this, new ImageIcon(bufferedImages[i]), x, y, randomSeq[i] % cols, randomSeq[i] / rows);
-
-                // from my list of randomNums, take one num, this will decide the position in the grid that the element will be placed in
                 int randomX = randomSeq[i] % cols;
                 int randomY = randomSeq[i] / rows;
 
                 imageSlices[i] = new ImageSlice(this, new ImageIcon(bufferedImages[i]), x, y, randomX, randomY);
-
-                GridBagConstraints gridConstraints = new GridBagConstraints();
 
                 gridConstraints.gridx = randomX;
                 gridConstraints.gridy = randomY;
@@ -122,7 +115,6 @@ public class ImagePuzzleFrame extends JFrame {
             destSlice.setSelected(true);
 
             // both slices are set, we can now reorder board
-            //swapSlices();
             swapGridItems(sourceSlice, destSlice);
 
             // remove the selected state
@@ -135,7 +127,14 @@ public class ImagePuzzleFrame extends JFrame {
 
             // finally check if the board is correct
             // if correct, show a congratulation  message
-            // JOP
+            if (boardSolved()) {
+                JOptionPane.showMessageDialog(
+                    this,
+                    "Congratulations! You have solved the board",
+                    "Board Solved",
+                    JOptionPane.INFORMATION_MESSAGE
+                );
+            }
         }
     }
 
@@ -144,9 +143,6 @@ public class ImagePuzzleFrame extends JFrame {
         int sourceY = sourceSlice.getCurrentYPos();
         int destX = destSlice.getCurrentXPos();
         int destY = destSlice.getCurrentYPos();
-
-        imagePane.remove(sourceSlice);
-        imagePane.remove(destSlice);
 
         GridBagConstraints gridConstraints = new GridBagConstraints();
 
