@@ -1,8 +1,7 @@
 /**
  * Defines an Image Jigsaw puzzle
  */
-// TODO Images need to be resized to not be excessively large
-// TODO the size of frame needs to be set based on the aspect ratio of the image
+// TODO the scaled image height should not exceed the height of the window - the frame borders
 import javax.swing.*;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
@@ -15,6 +14,7 @@ import java.nio.Buffer;
 import java.util.Random;
 
 public class ImagePuzzleFrame extends JFrame {
+    private Container mainPane;
     private Container imagePane;
     PicSaw parent;
     JMenu exitBtn;
@@ -30,13 +30,10 @@ public class ImagePuzzleFrame extends JFrame {
         this.parent = parent;
 
         setTitle("PicSaw - Image Puzzle Game");
-        // TODO set size must be be set relative to the size of the image
-        //setSize(700, 600);
-
         setResizable(false);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 
-        Container mainPane = getContentPane();
+        mainPane = getContentPane();
 
         JMenuBar mainMenuBar = new JMenuBar();
         setJMenuBar(mainMenuBar);
@@ -45,24 +42,22 @@ public class ImagePuzzleFrame extends JFrame {
         exitBtn.addMenuListener(new ExitButtonMenuListener());
         mainMenuBar.add(exitBtn);
 
-        // splitting the image into slices
-        try {
-            imageSplitter(imageSrc);
-        } catch (Exception exc) {
-            System.out.println(exc);
-        }
-
         imagePane = new Container();
 
-        GridLayout gl = new GridLayout(rows, cols);
-        gl.setVgap(0);
-        gl.setHgap(0);
+        GridBagLayout gl = new GridBagLayout();
+        //gl.setVgap(0);
+        //gl.setHgap(0);
 
         imagePane.setLayout(gl);
 
         mainPane.add(imagePane);
 
-        addSlicesToImagePane();
+        // splitting the image into slices
+        try {
+            generatePuzzleGrid(imageSrc);
+        } catch (Exception exc) {
+            System.out.println(exc);
+        }
 
         pack();
 
@@ -74,14 +69,13 @@ public class ImagePuzzleFrame extends JFrame {
      * Based on code found here:
      * http://kalanir.blogspot.ie/2010/02/how-to-split-image-into-chunks-java.html
      */
-    private void imageSplitter (java.net.URI imageSrc) throws IOException, URISyntaxException {
+    private void generatePuzzleGrid (java.net.URI imageSrc) throws IOException, URISyntaxException {
         int[] randomSeq = randomIntSequence(rows * cols);
 
         File file = new File(imageSrc);
         FileInputStream fis = new FileInputStream(file);
         BufferedImage srcImage = ImageIO.read(fis);
 
-        // TODO the frames height should be set relative to the height of the image
         int scaledWidth = 600;
         int scaledHeight = (int)((double)scaledWidth / (double)srcImage.getWidth() * srcImage.getHeight());
 
@@ -101,7 +95,20 @@ public class ImagePuzzleFrame extends JFrame {
                 gr.drawImage(srcImage, 0, 0, sliceWidth, sliceHeight, srcSliceWidth * y, srcSliceHeight * x, srcSliceWidth * y + srcSliceWidth, srcSliceHeight * x + srcSliceHeight, null);
                 gr.dispose();
 
-                imageSlices[randomSeq[i]] = new ImageSlice(this, new ImageIcon(bufferedImages[i]), x, y, randomSeq[i] % cols, randomSeq[i] / rows);
+                //imageSlices[randomSeq[i]] = new ImageSlice(this, new ImageIcon(bufferedImages[i]), x, y, randomSeq[i] % cols, randomSeq[i] / rows);
+
+                // from my list of randomNums, take one num, this will decide the position in the grid that the element will be placed in
+                int randomX = randomSeq[i] % cols;
+                int randomY = randomSeq[i] / rows;
+
+                imageSlices[i] = new ImageSlice(this, new ImageIcon(bufferedImages[i]), x, y, randomX, randomY);
+
+                GridBagConstraints gridConstraints = new GridBagConstraints();
+
+                gridConstraints.gridx = randomX;
+                gridConstraints.gridy = randomY;
+
+                imagePane.add(imageSlices[i], gridConstraints);
             }
         }
     }
@@ -115,7 +122,8 @@ public class ImagePuzzleFrame extends JFrame {
             destSlice.setSelected(true);
 
             // both slices are set, we can now reorder board
-            swapSlices();
+            //swapSlices();
+            swapGridItems(sourceSlice, destSlice);
 
             // remove the selected state
             sourceSlice.setSelected(false);
@@ -132,40 +140,36 @@ public class ImagePuzzleFrame extends JFrame {
     }
 
     // TODO Image Swapping Not Working
-    private void swapSlices () {
-        // source and destination slices are set
-        if (sourceSlice != null && destSlice != null) {
-            int sourceSliceIndex = getSliceIndex(sourceSlice);
-            int destSliceIndex = getSliceIndex(destSlice);
+    private void swapGridItems (ImageSlice sourceSlice, ImageSlice destSlice) {
+        int sourceX = sourceSlice.getCurrentXPos();
+        int sourceY = sourceSlice.getCurrentYPos();
+        int destX = destSlice.getCurrentXPos();
+        int destY = destSlice.getCurrentYPos();
 
-            ImageSlice tempSlice = imageSlices[sourceSliceIndex];
-            imageSlices[sourceSliceIndex] = imageSlices[destSliceIndex];
-            imageSlices[destSliceIndex] = tempSlice;
+        System.out.println("Swapping " + sourceX + "," + sourceY + " with " + destX + "," + destY);
 
-            imagePane.removeAll();
-            addSlicesToImagePane();
+        imagePane.remove(sourceSlice);
+        imagePane.remove(destSlice);
 
-            imagePane.repaint();
-        }
+        GridBagConstraints gridConstraints = new GridBagConstraints();
+
+        gridConstraints.gridx = sourceX;
+        gridConstraints.gridy = sourceY;
+
+        imagePane.add(destSlice, gridConstraints);
+
+        destSlice.setCurrentPos(sourceX, sourceY);
+
+        gridConstraints.gridx = destX;
+        gridConstraints.gridy = destY;
+
+        imagePane.add(sourceSlice, gridConstraints);
+
+        sourceSlice.setCurrentPos(destX, destY);
+
+        imagePane.repaint();
     }
 
-    private void addSlicesToImagePane () {
-        for (int i = 0; i < imageSlices.length; i++) {
-            imagePane.add(imageSlices[i]);
-            imageSlices[i].setCursor(new Cursor(Cursor.HAND_CURSOR));
-        }
-    }
-
-    private int getSliceIndex (ImageSlice slice) {
-        for (int i = 0; i < imageSlices.length; i++) {
-            if (slice == imageSlices[i]) {
-                return i;
-            }
-        }
-
-        // if we can't find the slice, return -1;
-        return -1;
-    }
 
     private boolean boardSolved () {
         for (int i = 0; i < imageSlices.length; i++) {

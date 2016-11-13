@@ -45,6 +45,14 @@ public class ImageSlice extends JLabel {
         this.currentYPos = currentYPos;
     }
 
+    public int getCurrentXPos () {
+        return currentXPos;
+    }
+
+    public int getCurrentYPos () {
+        return currentYPos;
+    }
+
     public boolean inCorrectPosition () {
         if (currentXPos == xPos && currentYPos == yPos) {
             return true;
