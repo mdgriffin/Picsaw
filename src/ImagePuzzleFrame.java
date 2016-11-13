@@ -119,6 +119,7 @@ public class ImagePuzzleFrame extends JFrame {
         }
     }
 
+    // TODO Image Swapping Not Working
     private void swapSlices () {
         // source and destination slices are set
         if (sourceSlice != null && destSlice != null) {
