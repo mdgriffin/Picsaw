@@ -53,7 +53,7 @@ public class PicSaw extends JFrame {
         difficultyPane.add(difficultyLabel);
 
         difficultySelect = new JComboBox(new String[]{ "Easy", "Moderate", "Hard", "Impossible"});
-        difficultySelect.setSelectedIndex(2);
+        difficultySelect.setSelectedIndex(0);
         difficultyPane.add(difficultySelect);
 
         JLabel titleLabel = new JLabel("Please select from the following images:");
@@ -107,11 +107,11 @@ public class PicSaw extends JFrame {
         String selectedDifficulty = difficultySelect.getSelectedItem().toString();
 
         if (selectedDifficulty.equals("Moderate")) {
-            rows = cols = 8;
+            rows = cols = 6;
         } else if (selectedDifficulty.equals("Hard")) {
-            rows =  cols = 12;
+            rows =  cols = 8;
         } else if (selectedDifficulty.equals("Impossible")) {
-            rows = cols = 24;
+            rows = cols = 16;
         }
 
         return new int[]{rows, cols};

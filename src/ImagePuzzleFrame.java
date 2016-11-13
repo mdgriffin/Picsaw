@@ -19,7 +19,6 @@ public class ImagePuzzleFrame extends JFrame {
     private Container imagePane;
     PicSaw parent;
     JMenu exitBtn;
-    // TODO Set row and col attributes from the constructor
     private int rows;
     private  int cols;
     ImageSlice[] imageSlices;

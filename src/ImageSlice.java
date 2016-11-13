@@ -22,7 +22,7 @@ public class ImageSlice extends JLabel {
         this.currentXPos = currentXPos;
         this.currentYPos = currentYPos;
 
-        this.setBorder(BorderFactory.createMatteBorder(2, 2, 2, 2, Color.white));
+        this.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.white));
 
         this.addMouseListener(new ImageMouseEvent());
     }
@@ -34,9 +34,9 @@ public class ImageSlice extends JLabel {
 
     public void setSelected () {
         if (selected) {
-            this.setBorder(BorderFactory.createMatteBorder(2, 2, 2, 2, Color.red));
+            this.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.red));
         } else {
-            this.setBorder(BorderFactory.createMatteBorder(2, 2, 2, 2, Color.white));
+            this.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.white));
         }
     }
 
@@ -67,7 +67,7 @@ public class ImageSlice extends JLabel {
         }
 
         public void mouseEntered (MouseEvent e) {
-            ImageSlice.this.setBorder(BorderFactory.createMatteBorder(2, 2, 2, 2, Color.green));
+            ImageSlice.this.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.green));
         }
 
         public void mouseExited (MouseEvent e) {
