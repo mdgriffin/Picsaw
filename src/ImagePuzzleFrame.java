@@ -139,14 +139,11 @@ public class ImagePuzzleFrame extends JFrame {
         }
     }
 
-    // TODO Image Swapping Not Working
     private void swapGridItems (ImageSlice sourceSlice, ImageSlice destSlice) {
         int sourceX = sourceSlice.getCurrentXPos();
         int sourceY = sourceSlice.getCurrentYPos();
         int destX = destSlice.getCurrentXPos();
         int destY = destSlice.getCurrentYPos();
-
-        System.out.println("Swapping " + sourceX + "," + sourceY + " with " + destX + "," + destY);
 
         imagePane.remove(sourceSlice);
         imagePane.remove(destSlice);
@@ -167,6 +164,7 @@ public class ImagePuzzleFrame extends JFrame {
 
         sourceSlice.setCurrentPos(destX, destY);
 
+        imagePane.revalidate();
         imagePane.repaint();
     }
 

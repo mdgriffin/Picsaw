@@ -4,7 +4,6 @@
     <list default="true" id="4815ac18-df39-4d81-8aca-69819e2aeb32" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/ImagePuzzleFrame.java" afterPath="$PROJECT_DIR$/src/ImagePuzzleFrame.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/ImageSlice.java" afterPath="$PROJECT_DIR$/src/ImageSlice.java" />
     </list>
     <ignored path="Picsaw.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -41,10 +40,10 @@
       <file leaf-file-name="ImagePuzzleFrame.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/ImagePuzzleFrame.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="529">
-              <caret line="171" column="0" selection-start-line="171" selection-start-column="0" selection-end-line="171" selection-end-column="0" />
+            <state relative-caret-position="256">
+              <caret line="147" column="0" selection-start-line="147" selection-start-column="0" selection-end-line="147" selection-end-column="0" />
               <folding>
-                <element signature="e#0#7283#0" expanded="true" />
+                <element signature="e#0#7175#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -53,7 +52,7 @@
       <file leaf-file-name="ImageSlice.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/ImageSlice.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="480">
+            <state relative-caret-position="735">
               <caret line="52" column="27" selection-start-line="52" selection-start-column="27" selection-end-line="52" selection-end-column="27" />
               <folding>
                 <element signature="e#1355#1356#0" expanded="true" />
@@ -618,12 +617,12 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1479030516320</updated>
-      <workItem from="1479030517616" duration="13796000" />
+      <workItem from="1479030517616" duration="14496000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="13796000" />
+    <option name="totallyTimeSpent" value="14496000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -734,7 +733,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/ImageSlice.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="480">
+        <state relative-caret-position="735">
           <caret line="52" column="27" selection-start-line="52" selection-start-column="27" selection-end-line="52" selection-end-column="27" />
           <folding>
             <element signature="e#1355#1356#0" expanded="true" />
@@ -747,10 +746,10 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/ImagePuzzleFrame.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="529">
-          <caret line="171" column="0" selection-start-line="171" selection-start-column="0" selection-end-line="171" selection-end-column="0" />
+        <state relative-caret-position="256">
+          <caret line="147" column="0" selection-start-line="147" selection-start-column="0" selection-end-line="147" selection-end-column="0" />
           <folding>
-            <element signature="e#0#7283#0" expanded="true" />
+            <element signature="e#0#7175#0" expanded="true" />
           </folding>
         </state>
       </provider>
