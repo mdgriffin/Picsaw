@@ -3,8 +3,8 @@
  */
 import java.awt.*;
 import java.awt.event.*;
+import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.HashMap;
 import javax.swing.*;
 import javax.swing.filechooser.*;
 import javax.swing.event.MenuEvent;
@@ -165,17 +165,20 @@ public class PicSaw extends JFrame {
     // TODO menu currently buggy, sometimes opens unexpectedly
     private class OpenFileMenuListener implements MenuListener {
         public void menuSelected(MenuEvent e) {
-            JFileChooser chooser = new JFileChooser();
+            FileDialog picker = new FileDialog(PicSaw.this);
 
-            FileNameExtensionFilter filter = new FileNameExtensionFilter("Image Files Only", "jpg", "jpeg", "png", "gif");
-            chooser.setFileFilter(filter);
+            // fd.setFile("*.xml"); // probably used to filter files
 
-            int returnVal = chooser.showOpenDialog(PicSaw.this);
+            picker.setVisible(true);
+
+            String filename = picker.getFile();
+            String dir = picker.getDirectory();
 
             // TODO check the returned file is an image
-            if(returnVal == JFileChooser.APPROVE_OPTION) {
+            if (filename != null) {
+                System.out.println(dir + filename);
                 int[] difficultyLevel = getDifficultyLevel();
-                ImagePuzzleFrame puzzle = new ImagePuzzleFrame(PicSaw.this, chooser.getSelectedFile().toURI(), difficultyLevel[0], difficultyLevel[1]);
+                ImagePuzzleFrame puzzle = new ImagePuzzleFrame(PicSaw.this, URI.create("File://" + dir + filename), difficultyLevel[0], difficultyLevel[1]);
                 puzzle.setVisible(true);
 
                 PicSaw.this.setVisible(false);
