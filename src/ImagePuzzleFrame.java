@@ -11,6 +11,7 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.URISyntaxException;
+import java.nio.Buffer;
 import java.util.Random;
 
 public class ImagePuzzleFrame extends JFrame {
@@ -73,25 +74,31 @@ public class ImagePuzzleFrame extends JFrame {
 
         File file = new File(imageSrc);
         FileInputStream fis = new FileInputStream(file);
-        BufferedImage image = ImageIO.read(fis); //reading the image file
+        BufferedImage srcImage = ImageIO.read(fis);
 
-        int sliceWidth = image.getWidth() / cols;
-        int sliceHeight = image.getHeight() / rows;
+        // TODO the frames height should be set relative to the height of the image
+        int scaledWidth = 600;
+        int scaledHeight = (int)((double)scaledWidth / (double)srcImage.getWidth() * srcImage.getHeight());
+
+        int sliceWidth = scaledWidth / cols;
+        int sliceHeight = scaledHeight / rows;
+
+        int srcSliceWidth = srcImage.getWidth() / cols;
+        int srcSliceHeight = srcImage.getHeight() / rows;
 
         BufferedImage[] bufferedImages = new BufferedImage[rows * cols];
 
         for (int i = 0, x = 0; x < rows; x++) {
             for (int y = 0; y < cols; y++, i++) {
-                bufferedImages[i] = new BufferedImage(sliceWidth, sliceHeight, image.getType());
+                bufferedImages[i] = new BufferedImage(sliceWidth, sliceHeight, srcImage.getType());
 
                 Graphics2D gr = bufferedImages[i].createGraphics();
-                gr.drawImage(image, 0, 0, sliceWidth, sliceHeight, sliceWidth * y, sliceHeight * x, sliceWidth * y + sliceWidth, sliceHeight * x + sliceHeight, null);
+                gr.drawImage(srcImage, 0, 0, sliceWidth, sliceHeight, srcSliceWidth * y, srcSliceHeight * x, srcSliceWidth * y + srcSliceWidth, srcSliceHeight * x + srcSliceHeight, null);
                 gr.dispose();
 
                 imageSlices[randomSeq[i]] = new ImageSlice(this, new ImageIcon(bufferedImages[i]), x, y, randomSeq[i] % cols, randomSeq[i] / rows);
             }
         }
-
     }
 
     public void sliceSelected (ImageSlice slice) {
