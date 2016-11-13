@@ -7,7 +7,6 @@ public class ImageSlice extends JLabel {
     private boolean selected = false;
     private int xPos;
     private int yPos;
-    // TODO Set these attributes from constructor
     private int currentXPos;
     private int currentYPos;
     private ImagePuzzleFrame parent;
@@ -46,8 +45,6 @@ public class ImageSlice extends JLabel {
         this.currentYPos = currentYPos;
     }
 
-    // TODO Uncomment and use to determine if all pieces are in their correct position
-    // TODO Should this method be static?
     public boolean inCorrectPosition () {
         if (currentXPos == xPos && currentYPos == yPos) {
             return true;

@@ -64,6 +64,10 @@ public class ImagePuzzleFrame extends JFrame {
         addSlicesToImagePane();
     }
 
+    /**
+     * Based on code found here:
+     * http://kalanir.blogspot.ie/2010/02/how-to-split-image-into-chunks-java.html
+     */
     private void imageSplitter (String imageSrc) throws IOException, URISyntaxException {
         int[] randomSeq = randomIntSequence(rows * cols);
 
@@ -71,22 +75,19 @@ public class ImagePuzzleFrame extends JFrame {
         FileInputStream fis = new FileInputStream(file);
         BufferedImage image = ImageIO.read(fis); //reading the image file
 
-        int chunkWidth = image.getWidth() / cols;
-        int chunkHeight = image.getHeight() / rows;
+        int sliceWidth = image.getWidth() / cols;
+        int sliceHeight = image.getHeight() / rows;
 
         BufferedImage[] bufferedImages = new BufferedImage[rows * cols];
 
         for (int i = 0, x = 0; x < rows; x++) {
             for (int y = 0; y < cols; y++, i++) {
-                //Initialize the image array with image chunks
-                bufferedImages[i] = new BufferedImage(chunkWidth, chunkHeight, image.getType());
+                bufferedImages[i] = new BufferedImage(sliceWidth, sliceHeight, image.getType());
 
-                // draws the image chunk
                 Graphics2D gr = bufferedImages[i].createGraphics();
-                gr.drawImage(image, 0, 0, chunkWidth, chunkHeight, chunkWidth * y, chunkHeight * x, chunkWidth * y + chunkWidth, chunkHeight * x + chunkHeight, null);
+                gr.drawImage(image, 0, 0, sliceWidth, sliceHeight, sliceWidth * y, sliceHeight * x, sliceWidth * y + sliceWidth, sliceHeight * x + sliceHeight, null);
                 gr.dispose();
 
-                // TODO Pass the randomized x and y co-ordinates into the ImageSlice constructor
                 imageSlices[randomSeq[i]] = new ImageSlice(this, new ImageIcon(bufferedImages[i]), x, y, randomSeq[i] % cols, randomSeq[i] / rows);
             }
         }
