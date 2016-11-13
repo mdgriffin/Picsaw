@@ -3,7 +3,11 @@
  */
 import java.awt.*;
 import java.awt.event.*;
+import java.net.URISyntaxException;
 import javax.swing.*;
+import javax.swing.filechooser.*;
+import javax.swing.event.MenuEvent;
+import javax.swing.event.MenuListener;
 
 public class PicSaw extends JFrame {
     private Container mainPane;
@@ -31,7 +35,10 @@ public class PicSaw extends JFrame {
         JMenuBar mainMenuBar = new JMenuBar();
         setJMenuBar(mainMenuBar);
 
-        mainMenuBar.add(new MainMenuItem("New"));
+        MainMenuItem openImageBuutton = new MainMenuItem("Open Image");
+        openImageBuutton.addMenuListener(new OpenFileMenuListener());
+
+        mainMenuBar.add(openImageBuutton);
         mainMenuBar.add(new MainMenuItem("Item with submenu", new String[]{"Item 1", "Item 2", "Item 3"}));
 
         JLabel titleLabel = new JLabel("Please select from the following images:");
@@ -81,10 +88,15 @@ public class PicSaw extends JFrame {
 
     private class ImageGridMouseEvent extends MouseAdapter {
         public void mousePressed (MouseEvent e) {
-            ImagePuzzleFrame puzzle = new ImagePuzzleFrame(PicSaw.this, imageUrls[getEventSourceLabelIndex(e)]);
-            puzzle.setVisible(true);
+            try  {
+                java.net.URI  imageSrc = getClass().getResource(imageUrls[getEventSourceLabelIndex(e)]).toURI();
+                ImagePuzzleFrame puzzle = new ImagePuzzleFrame(PicSaw.this, imageSrc);
 
-            PicSaw.this.setVisible(false);
+                puzzle.setVisible(true);
+                PicSaw.this.setVisible(false);
+            } catch (URISyntaxException exc) {
+                System.out.println(exc);
+            }
         }
 
         public void mouseEntered (MouseEvent e) {
@@ -114,5 +126,28 @@ public class PicSaw extends JFrame {
                 add(new JMenuItem(items[i]));
             }
         }
+    }
+
+    private class OpenFileMenuListener implements MenuListener {
+        public void menuSelected(MenuEvent e) {
+            JFileChooser chooser = new JFileChooser();
+
+            FileNameExtensionFilter filter = new FileNameExtensionFilter("Image Files Only", "jpg", "jpeg", "png", "gif");
+            chooser.setFileFilter(filter);
+
+            int returnVal = chooser.showOpenDialog(PicSaw.this);
+
+            if(returnVal == JFileChooser.APPROVE_OPTION) {
+                // TODO check the returned file is an image
+                ImagePuzzleFrame puzzle = new ImagePuzzleFrame(PicSaw.this, chooser.getSelectedFile().toURI());
+                puzzle.setVisible(true);
+
+                PicSaw.this.setVisible(false);
+            }
+        }
+
+        public void menuDeselected(MenuEvent e) {}
+
+        public void menuCanceled(MenuEvent e) {}
     }
 }

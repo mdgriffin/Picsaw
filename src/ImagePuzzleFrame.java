@@ -25,7 +25,7 @@ public class ImagePuzzleFrame extends JFrame {
     private ImageSlice sourceSlice;
     private ImageSlice destSlice;
 
-    public ImagePuzzleFrame(PicSaw parent, String imageSrc) {
+    public ImagePuzzleFrame(PicSaw parent, java.net.URI imageSrc) {
         this.parent = parent;
 
         setTitle("PicSaw - Image Puzzle Game");
@@ -68,10 +68,10 @@ public class ImagePuzzleFrame extends JFrame {
      * Based on code found here:
      * http://kalanir.blogspot.ie/2010/02/how-to-split-image-into-chunks-java.html
      */
-    private void imageSplitter (String imageSrc) throws IOException, URISyntaxException {
+    private void imageSplitter (java.net.URI imageSrc) throws IOException, URISyntaxException {
         int[] randomSeq = randomIntSequence(rows * cols);
 
-        File file = new File(getClass().getResource(imageSrc).toURI());
+        File file = new File(imageSrc);
         FileInputStream fis = new FileInputStream(file);
         BufferedImage image = ImageIO.read(fis); //reading the image file
 
