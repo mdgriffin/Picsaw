@@ -197,19 +197,25 @@ public class ImagePuzzleFrame extends JFrame {
 
     private class ExitButtonMenuListener implements  MenuListener {
         public void menuSelected(MenuEvent e) {
-            int choice =  JOptionPane.showConfirmDialog(
-                    ImagePuzzleFrame.this,
-                    "Are you sure you want to exit? You will lose any progress you have made with the puzzle",
-                    "Please Confirm",
-                    JOptionPane.YES_NO_OPTION
-            );
+            if (!boardSolved()) {
+                int choice =  JOptionPane.showConfirmDialog(
+                        ImagePuzzleFrame.this,
+                        "Are you sure you want to exit? You will lose any progress you have made with the puzzle",
+                        "Please Confirm",
+                        JOptionPane.YES_NO_OPTION
+                );
 
-            if (choice == JOptionPane.YES_OPTION) {
+                if (choice == JOptionPane.YES_OPTION) {
+                    parent.setVisible(true);
+                    ImagePuzzleFrame.this.dispose();
+                } else {
+                    exitBtn.setSelected(false);
+                }
+            } else {
                 parent.setVisible(true);
                 ImagePuzzleFrame.this.dispose();
-            } else {
-                exitBtn.setSelected(false);
             }
+
         }
 
         public void menuDeselected(MenuEvent e) {}
