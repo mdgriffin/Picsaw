@@ -3,10 +3,10 @@
  */
 import java.awt.*;
 import java.awt.event.*;
+import java.io.*;
 import java.net.URI;
 import java.net.URISyntaxException;
 import javax.swing.*;
-import javax.swing.filechooser.*;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
 
@@ -166,17 +166,13 @@ public class PicSaw extends JFrame {
     private class OpenFileMenuListener implements MenuListener {
         public void menuSelected(MenuEvent e) {
             FileDialog picker = new FileDialog(PicSaw.this);
-
-            // fd.setFile("*.xml"); // probably used to filter files
-
+            picker.setFilenameFilter(new ImageFileFilter());
             picker.setVisible(true);
 
             String filename = picker.getFile();
             String dir = picker.getDirectory();
 
-            // TODO check the returned file is an image
             if (filename != null) {
-                System.out.println(dir + filename);
                 int[] difficultyLevel = getDifficultyLevel();
                 ImagePuzzleFrame puzzle = new ImagePuzzleFrame(PicSaw.this, URI.create("File://" + dir + filename), difficultyLevel[0], difficultyLevel[1]);
                 puzzle.setVisible(true);
@@ -188,5 +184,14 @@ public class PicSaw extends JFrame {
         public void menuDeselected(MenuEvent e) {}
 
         public void menuCanceled(MenuEvent e) {}
+    }
+
+    private class ImageFileFilter implements FilenameFilter {
+        public boolean accept (File dir, String name) {
+            if (name.matches(".+\\.(jpg|jpeg|png|gif)$")) {
+                return true;
+            }
+            return true;
+        }
     }
 }
