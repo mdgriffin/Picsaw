@@ -20,15 +20,19 @@ public class ImagePuzzleFrame extends JFrame {
     PicSaw parent;
     JMenu exitBtn;
     // TODO Set row and col attributes from the constructor
-    private int rows = 3;
-    private  int cols = 3;
-    ImageSlice[] imageSlices = new ImageSlice[rows * cols];
-    //JLabel[] imageLabels = new JLabel[rows * cols];
+    private int rows;
+    private  int cols;
+    ImageSlice[] imageSlices;
     private ImageSlice sourceSlice;
     private ImageSlice destSlice;
 
-    public ImagePuzzleFrame(PicSaw parent, java.net.URI imageSrc) {
+    public ImagePuzzleFrame(PicSaw parent, java.net.URI imageSrc, int rows, int cols) {
         this.parent = parent;
+
+        this.rows = rows;
+        this.cols = cols;
+
+        imageSlices = new ImageSlice[rows * cols];
 
         setTitle("PicSaw - Image Puzzle Game");
         setResizable(false);
@@ -46,8 +50,6 @@ public class ImagePuzzleFrame extends JFrame {
         imagePane = new Container();
 
         GridBagLayout gl = new GridBagLayout();
-        //gl.setVgap(0);
-        //gl.setHgap(0);
 
         imagePane.setLayout(gl);
 
@@ -173,6 +175,8 @@ public class ImagePuzzleFrame extends JFrame {
         }
         return true;
     }
+
+
 
     /**
      * Based on swap and shuffle methods in java.util.Collections

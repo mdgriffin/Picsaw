@@ -4,6 +4,7 @@
 import java.awt.*;
 import java.awt.event.*;
 import java.net.URISyntaxException;
+import java.util.HashMap;
 import javax.swing.*;
 import javax.swing.filechooser.*;
 import javax.swing.event.MenuEvent;
@@ -12,6 +13,7 @@ import javax.swing.event.MenuListener;
 public class PicSaw extends JFrame {
     private Container mainPane;
     private Container imagePane;
+    private JComboBox difficultySelect;
     private String[] imageUrls = new String[]{"images/img1.jpg", "images/img2.jpg", "images/img3.jpg", "images/img4.jpg"};
     private JLabel[] imageLabels;
 
@@ -35,16 +37,29 @@ public class PicSaw extends JFrame {
         JMenuBar mainMenuBar = new JMenuBar();
         setJMenuBar(mainMenuBar);
 
-        MainMenuItem openImageBuutton = new MainMenuItem("Open Image");
-        openImageBuutton.addMenuListener(new OpenFileMenuListener());
+        MainMenuItem openImageButton = new MainMenuItem("Open Image");
+        openImageButton.addMenuListener(new OpenFileMenuListener());
 
-        mainMenuBar.add(openImageBuutton);
+        mainMenuBar.add(openImageButton);
         mainMenuBar.add(new MainMenuItem("Item with submenu", new String[]{"Item 1", "Item 2", "Item 3"}));
+
+        // TODO fix Container height issue
+        Container difficultyPane = new Container();
+        difficultyPane.setLayout(new FlowLayout());
+
+        mainPane.add(difficultyPane);
+
+        JLabel difficultyLabel = new JLabel("Select Difficulty:");
+        difficultyPane.add(difficultyLabel);
+
+        difficultySelect = new JComboBox(new String[]{ "Easy", "Moderate", "Hard", "Impossible"});
+        difficultySelect.setSelectedIndex(2);
+        difficultyPane.add(difficultySelect);
 
         JLabel titleLabel = new JLabel("Please select from the following images:");
         titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         titleLabel.setFont(new Font(titleLabel.getName(), Font.PLAIN, 22));
-        titleLabel.setBorder(BorderFactory.createEmptyBorder(25, 0, 25, 0));
+        titleLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 25, 0));
         mainPane.add(titleLabel);
 
         mainPane.add(createImageGrid());
@@ -86,11 +101,30 @@ public class PicSaw extends JFrame {
         return 0;
     }
 
+    private int[] getDifficultyLevel () {
+        int rows = 4;
+        int cols = 4;
+        String selectedDifficulty = difficultySelect.getSelectedItem().toString();
+
+        if (selectedDifficulty.equals("Moderate")) {
+            rows = cols = 8;
+        } else if (selectedDifficulty.equals("Hard")) {
+            rows =  cols = 12;
+        } else if (selectedDifficulty.equals("Impossible")) {
+            rows = cols = 24;
+        }
+
+        return new int[]{rows, cols};
+
+    }
+
     private class ImageGridMouseEvent extends MouseAdapter {
         public void mousePressed (MouseEvent e) {
             try  {
                 java.net.URI  imageSrc = getClass().getResource(imageUrls[getEventSourceLabelIndex(e)]).toURI();
-                ImagePuzzleFrame puzzle = new ImagePuzzleFrame(PicSaw.this, imageSrc);
+                int[] difficultyLevel = getDifficultyLevel();
+
+                ImagePuzzleFrame puzzle = new ImagePuzzleFrame(PicSaw.this, imageSrc, difficultyLevel[0], difficultyLevel[1]);
 
                 puzzle.setVisible(true);
                 PicSaw.this.setVisible(false);
@@ -128,6 +162,7 @@ public class PicSaw extends JFrame {
         }
     }
 
+    // TODO menu currently buggy, sometimes opens unexpectedly
     private class OpenFileMenuListener implements MenuListener {
         public void menuSelected(MenuEvent e) {
             JFileChooser chooser = new JFileChooser();
@@ -137,9 +172,10 @@ public class PicSaw extends JFrame {
 
             int returnVal = chooser.showOpenDialog(PicSaw.this);
 
+            // TODO check the returned file is an image
             if(returnVal == JFileChooser.APPROVE_OPTION) {
-                // TODO check the returned file is an image
-                ImagePuzzleFrame puzzle = new ImagePuzzleFrame(PicSaw.this, chooser.getSelectedFile().toURI());
+                int[] difficultyLevel = getDifficultyLevel();
+                ImagePuzzleFrame puzzle = new ImagePuzzleFrame(PicSaw.this, chooser.getSelectedFile().toURI(), difficultyLevel[0], difficultyLevel[1]);
                 puzzle.setVisible(true);
 
                 PicSaw.this.setVisible(false);
