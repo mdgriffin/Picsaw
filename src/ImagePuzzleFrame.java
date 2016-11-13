@@ -30,10 +30,10 @@ public class ImagePuzzleFrame extends JFrame {
         this.parent = parent;
 
         setTitle("PicSaw - Image Puzzle Game");
-        setSize(700, 600);
+        // TODO set size must be be set relative to the size of the image
+        //setSize(700, 600);
+
         setResizable(false);
-        // centers the Frame
-        setLocationRelativeTo(null);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 
         Container mainPane = getContentPane();
@@ -54,15 +54,20 @@ public class ImagePuzzleFrame extends JFrame {
 
         imagePane = new Container();
 
-        FlowLayout fl = new FlowLayout();
-        fl.setVgap(0);
-        fl.setHgap(0);
+        GridLayout gl = new GridLayout(rows, cols);
+        gl.setVgap(0);
+        gl.setHgap(0);
 
-        imagePane.setLayout(fl);
+        imagePane.setLayout(gl);
 
         mainPane.add(imagePane);
 
         addSlicesToImagePane();
+
+        pack();
+
+        // centers the Frame
+        setLocationRelativeTo(null);
     }
 
     /**
