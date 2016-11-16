@@ -2,8 +2,6 @@
  * Defines an Image Jigsaw puzzle
  */
 // TODO the scaled image height should not exceed the height of the window - the frame borders
-import com.sun.codemodel.internal.JOp;
-
 import javax.swing.*;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
