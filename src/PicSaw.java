@@ -174,7 +174,7 @@ public class PicSaw extends JFrame {
 
             if (filename != null) {
                 int[] difficultyLevel = getDifficultyLevel();
-                ImagePuzzleFrame puzzle = new ImagePuzzleFrame(PicSaw.this, URI.create("File://" + dir.replace(" ", "%20") + filename.replace(" ", "%20")), difficultyLevel[0], difficultyLevel[1]);
+                ImagePuzzleFrame puzzle = new ImagePuzzleFrame(PicSaw.this, URI.create("File:///" + dir.replace(" ", "%20").replace("\\", "/") + filename.replace(" ", "%20")), difficultyLevel[0], difficultyLevel[1]);
                 puzzle.setVisible(true);
 
                 PicSaw.this.setVisible(false);
