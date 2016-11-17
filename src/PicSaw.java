@@ -44,7 +44,7 @@ public class PicSaw extends JFrame {
         mainMenuBar.add(new MainMenuItem("Item with submenu", new String[]{"Item 1", "Item 2", "Item 3"}));
 
         // TODO fix Container height issue
-        Container difficultyPane = new Container();
+        JPanel difficultyPane = new JPanel();
         difficultyPane.setLayout(new FlowLayout());
 
         mainPane.add(difficultyPane);
