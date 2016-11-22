@@ -1,6 +1,18 @@
 /**
- * Picsaw Image Puzzle Game
+ * <h1>Picsaw - Image Jigsaw puzzle game</h1>
+ *
+ * Splits an image into blocks and displays the blocks in a randomized grid.
+ * The user selects a source and destination image block and their location is swapped.
+ * <p>
+ * Allows the user to select from either pre-defined images or select their own
+ * images from the file system.
+ *
+ * @author  Michael Griffin
+ * @version 0.5
+ * @since   2016/11/22
  */
+
+
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
@@ -17,10 +29,20 @@ public class PicSaw extends JFrame {
     private String[] imageUrls = new String[]{"images/img1.jpg", "images/img2.jpg", "images/img3.jpg", "images/img4.jpg"};
     private JLabel[] imageLabels;
 
+    /**
+     * Creates a new instance of the PicSaw class and sets it's visibility to true
+     *
+     * @param args
+     */
+
     public static void main(String[] args) {
         PicSaw gameFrame = new PicSaw();
         gameFrame.setVisible(true);
     }
+
+    /**
+     * Creates an instance of PicSaw setting up the menu, difficulty select and default images grid
+     */
 
     public PicSaw () {
         setTitle("PicSaw - Image Puzzle Game");
@@ -65,6 +87,18 @@ public class PicSaw extends JFrame {
         mainPane.add(createImageGrid());
     }
 
+    /**
+     * Creates and returns a Container containing the grid of default images used by the system.
+     *
+     * <p>
+     *
+     *  The default images are stored in the imageUrls class attribute as an array.
+     *  The ImageLabels are stored as an instance attribute of the class as an array
+     *  An instance of the  ImageGridMouseEvent class is bound to each of the imageLabels
+     *
+     * @return A <code>Container</code> with a grid of default images
+     */
+
     private Container createImageGrid () {
         imageLabels = new JLabel[4];
         ImageGridMouseEvent mouseEvent = new ImageGridMouseEvent();
@@ -91,6 +125,15 @@ public class PicSaw extends JFrame {
         return imagePane;
     }
 
+    /**
+     *  Gets the Index of the <code>ImageLabel</code> that emitted the click <code>MouseEvent</code>
+     *  This can then be used to get the image source of the label clicked which is then passed to the
+     *  constructor method of the <code>ImagePuzzleFrame</code> to set up the image puzzle grid
+     *
+     * @param sourceEvent
+     * @return <code>int</code> index of the <code>ImageLabel</code> that emitted the click <code>MouseEvent</code>
+     */
+
     private int getEventSourceLabelIndex (MouseEvent sourceEvent) {
         for (int i = 0; i < imageLabels.length; i++) {
             if (imageLabels[i] == sourceEvent.getSource()) {
@@ -100,6 +143,11 @@ public class PicSaw extends JFrame {
 
         return 0;
     }
+
+    /**
+     * Gets the difficulty level set in the difficulty select field
+     * @return
+     */
 
     private int[] getDifficultyLevel () {
         int rows = 4;
