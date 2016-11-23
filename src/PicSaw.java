@@ -32,7 +32,7 @@ public class PicSaw extends JFrame {
     /**
      * Creates a new instance of the PicSaw class and sets it's visibility to true
      *
-     * @param args
+     * @param args Default String array arguments parameter
      */
 
     public static void main(String[] args) {
@@ -145,8 +145,13 @@ public class PicSaw extends JFrame {
     }
 
     /**
-     * Gets the difficulty level set in the difficulty select field
-     * @return
+     * Gets the difficulty level set in the difficulty combo box
+     * <p>
+     * Checks the String of the selected item in the difficultySelect element
+     * and uses the value to decide on the number of rows and columns that
+     * the image should be divided into
+     * @return <code>int[]</code> An array with the first element being the number of rows and
+     * the second element being the number of columns
      */
 
     private int[] getDifficultyLevel () {
@@ -165,6 +170,13 @@ public class PicSaw extends JFrame {
         return new int[]{rows, cols};
 
     }
+
+    /**
+     * ImageGridMouseEvent exnteind the {@link MouseAdapter} class
+     * <p>
+     * Handles the mousePressed, mouseEntered and mouseExited events
+     * Class is instantiated as a mouse event listener on the main image grid
+     */
 
     private class ImageGridMouseEvent extends MouseAdapter {
         public void mousePressed (MouseEvent e) {
