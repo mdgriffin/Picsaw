@@ -56,7 +56,7 @@ public class ImagePuzzleFrame extends JFrame {
         try {
             generatePuzzleGrid(imageSrc);
         } catch (Exception exc) {
-            System.out.println(exc);
+            exc.printStackTrace();
         }
 
         pack();
