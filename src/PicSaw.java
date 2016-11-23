@@ -172,7 +172,7 @@ public class PicSaw extends JFrame {
     }
 
     /**
-     * ImageGridMouseEvent exnteind the {@link MouseAdapter} class
+     * ImageGridMouseEvent extends the {@link MouseAdapter} class
      * <p>
      * Handles the mousePressed, mouseEntered and mouseExited events
      * Class is instantiated as a mouse event listener on the main image grid
@@ -203,6 +203,11 @@ public class PicSaw extends JFrame {
         }
     }
 
+    /**
+     * Extends {@link JMenu} with a method that allows adding a String array of subitems
+     * to {@link JMenu}
+     */
+
     private class MainMenuItem extends JMenu {
         public MainMenuItem (String name) {
             super(name);
@@ -221,6 +226,14 @@ public class PicSaw extends JFrame {
             }
         }
     }
+
+    /**
+     *  Implements the {@link MenuListener} to listen for menu events on the Open File Menu item
+     *  <p>
+     *  Opens a {@link FileDialog} and allows the user to select from image files stored on their system
+     *  Once a file has been selected, a new instance of {@link ImagePuzzleFrame} frame will be instantiated
+     *  passing in the selected file source as a URI.
+     */
 
     // TODO menu currently buggy, sometimes opens unexpectedly
     private class OpenFileMenuListener implements MenuListener {
@@ -245,6 +258,14 @@ public class PicSaw extends JFrame {
 
         public void menuCanceled(MenuEvent e) {}
     }
+
+    /**
+     * Returns a FileName filter for filtering out all file types except for image files
+     * <p>
+     *  Used in conjunction with the {@link FileDialog} that is created when the "Open Image"
+     *  menu item is selected. This lanuches a FileDialog where the only files selectable
+     *  are files that have a jpg, jpeg, png or gif file extension
+     */
 
     private class ImageFileFilter implements FilenameFilter {
         public boolean accept (File dir, String name) {
