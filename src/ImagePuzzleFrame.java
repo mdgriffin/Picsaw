@@ -1,5 +1,5 @@
 /**
- * Defines an Image Jigsaw puzzle
+ *  <h1>This class defines an Image Jigsaw puzzle</h1>
  */
 // TODO the scaled image height should not exceed the height of the window - the frame borders
 import javax.swing.*;
@@ -22,6 +22,14 @@ public class ImagePuzzleFrame extends JFrame {
     ImageSlice[] imageSlices;
     private ImageSlice sourceSlice;
     private ImageSlice destSlice;
+
+    /**
+     *
+     * @param parent   The parent JFrame that instantiated this class
+     * @param imageSrc The source of the image that will be used to create the image grid
+     * @param rows     The number of rows that the image will be split into
+     * @param cols     The number of columns that the image will be split into
+     */
 
     public ImagePuzzleFrame(PicSaw parent, java.net.URI imageSrc, int rows, int cols) {
         this.parent = parent;
@@ -65,6 +73,21 @@ public class ImagePuzzleFrame extends JFrame {
         setLocationRelativeTo(null);
     }
 
+    /**
+     * Sets of the image  puzzle gird
+     *  <p>
+     *  Loads the image from the file system
+     *  Generates a {@link BufferedImage} array from the src image
+     *  setting it's correct width and height and it's correct x and y co-ordinates in the original image
+     *  Creates a new {@link ImageSlice} from the buffered image, settings it {@link GridBagConstraints} to a
+     *  random x and y position
+     *  Adds the {@link ImageSlice} to the imagePane
+     *
+     * @param imageSrc The URI of the image that will be used to create the puzzle grid
+     * @throws IOException
+     * @throws URISyntaxException
+     */
+
     private void generatePuzzleGrid (java.net.URI imageSrc) throws IOException, URISyntaxException {
         int[] randomSeq = randomIntSequence(rows * cols);
         GridBagConstraints gridConstraints = new GridBagConstraints();
@@ -105,6 +128,14 @@ public class ImagePuzzleFrame extends JFrame {
         }
     }
 
+    /**
+     * This method is used to set the two currently selected {@link ImageSlice} elements
+     * The two elements positions are then swapped and a method is called to check if the
+     *  board has been solved
+     *
+     * @param slice The {@link ImageSlice} that has been selected
+     */
+
     public void sliceSelected (ImageSlice slice) {
         if  (sourceSlice == null && destSlice == null) {
             sourceSlice = slice;
@@ -137,6 +168,13 @@ public class ImagePuzzleFrame extends JFrame {
         }
     }
 
+    /**
+     * This method swapped the grid position of two {@link ImageSlice} elements
+     *
+     * @param sourceSlice The source {link ImageSlice} element that is to be swapped
+     * @param destSlice   The destination {@link ImageSlice} element
+     */
+
     private void swapGridItems (ImageSlice sourceSlice, ImageSlice destSlice) {
         int sourceX = sourceSlice.getCurrentXPos();
         int sourceY = sourceSlice.getCurrentYPos();
@@ -163,6 +201,15 @@ public class ImagePuzzleFrame extends JFrame {
         imagePane.repaint();
     }
 
+    /**
+     * This method determines if the board has been solved
+     * <p>
+     * Loops over all the {@link ImageSlice} elements and check if the position is correct
+     * If all the elements are in the correct position the board has been solved and the
+     * game is over
+     *
+     * @return A boolean that determines whether all the image slices are in their correct position
+     */
 
     private boolean boardSolved () {
         for (int i = 0; i < imageSlices.length; i++) {
