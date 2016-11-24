@@ -17,6 +17,7 @@ public class ImagePuzzleFrame extends JFrame {
     private Container imagePane;
     PicSaw parent;
     JMenu exitBtn;
+    JMenu saveBtn;
     private int rows;
     private  int cols;
     ImageSlice[] imageSlices;
@@ -53,8 +54,12 @@ public class ImagePuzzleFrame extends JFrame {
         setJMenuBar(mainMenuBar);
 
         exitBtn = new JMenu("Exit");
-        exitBtn.addMenuListener(new ExitButtonMenuListener());
+        exitBtn.addMenuListener(new ExitButtonListener());
         mainMenuBar.add(exitBtn);
+
+        saveBtn = new JMenu("Save");
+        saveBtn.addMenuListener(new SaveButtonListener());
+        mainMenuBar.add(saveBtn);
 
         imagePane = new Container();
 
@@ -257,7 +262,7 @@ public class ImagePuzzleFrame extends JFrame {
      *  Implements the MenuListener interface to listen for events on the exit button menu item
      */
 
-    private class ExitButtonMenuListener implements  MenuListener {
+    private class ExitButtonListener implements  MenuListener {
         public void menuSelected(MenuEvent e) {
             if (!boardSolved()) {
                 int choice =  JOptionPane.showConfirmDialog(
@@ -276,6 +281,53 @@ public class ImagePuzzleFrame extends JFrame {
             } else {
                 parent.setVisible(true);
                 ImagePuzzleFrame.this.dispose();
+            }
+
+        }
+
+        public void menuDeselected(MenuEvent e) {}
+
+        public void menuCanceled(MenuEvent e) {}
+    }
+
+    /**
+     * Handles the saving of the current game state to file
+     *
+     * @throws Exception
+     */
+
+    private void savePuzzle () throws Exception {
+        // generate a random file name, or maybe use the date
+        // maybe ask the user to select a location in fileSystem
+        // limit to directories
+        File savedFile = new File("PuzzleFrame.data");
+        FileOutputStream  outFileStream	= new FileOutputStream(savedFile);
+        ObjectOutputStream objectOut = new ObjectOutputStream(outFileStream);
+
+        objectOut.writeObject(this);
+
+        System.out.println("saved file");
+
+        objectOut.close();
+    }
+
+    /**
+     * Implements the MenuListener interface to handle selected events
+     * on the save button JMenu
+     */
+
+    private class SaveButtonListener implements  MenuListener {
+        public void menuSelected(MenuEvent e) {
+            System.out.println("Save button clicked");
+            try {
+                savePuzzle();
+            } catch (Exception exc) {
+                JOptionPane.showMessageDialog(
+                    ImagePuzzleFrame.this,
+                    "Failed to save, please try again",
+                    "Error while saving",
+                    JOptionPane.ERROR_MESSAGE
+                );
             }
 
         }
