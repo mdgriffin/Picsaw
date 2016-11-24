@@ -24,11 +24,15 @@ public class ImagePuzzleFrame extends JFrame {
     private ImageSlice destSlice;
 
     /**
+     *  Create a new ImagePuzzleFrame from the provided image source URI
+     *  <p>
+     *  Generates a randomized grid from the supplied image, split into the
+     *  number of rows and columns specified in the parameters
      *
-     * @param parent   The parent JFrame that instantiated this class
-     * @param imageSrc The source of the image that will be used to create the image grid
-     * @param rows     The number of rows that the image will be split into
-     * @param cols     The number of columns that the image will be split into
+     *  @param parent   The parent JFrame that instantiated this class
+     *  @param imageSrc The source of the image that will be used to create the image grid
+     *  @param rows     The number of rows that the image will be split into
+     *  @param cols     The number of columns that the image will be split into
      */
 
     public ImagePuzzleFrame(PicSaw parent, java.net.URI imageSrc, int rows, int cols) {
@@ -223,7 +227,13 @@ public class ImagePuzzleFrame extends JFrame {
 
 
     /**
+     * This method generates a random sequence of integers in a range
+     * from 0 up to the value supplied in the seqLen parameter
+     * <p>
      * Based on swap and shuffle methods in java.util.Collections
+     *
+     *  @param seqLen  The length of the sequence and the max value in the sequence range
+     *  @return        A randomly ordered int array
      */
     public static int[] randomIntSequence (int seqLen) {
         int[] seq = new int[seqLen];
@@ -242,6 +252,10 @@ public class ImagePuzzleFrame extends JFrame {
 
         return seq;
     }
+
+    /**
+     *  Implements the MenuListener interface to listen for events on the exit button menu item
+     */
 
     private class ExitButtonMenuListener implements  MenuListener {
         public void menuSelected(MenuEvent e) {
