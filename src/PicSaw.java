@@ -62,7 +62,11 @@ public class PicSaw extends JFrame {
         MainMenuItem openImageButton = new MainMenuItem("Open Image");
         openImageButton.addMenuListener(new OpenFileMenuListener());
 
+        MainMenuItem loadPuzzleButton = new MainMenuItem("Load Puzzle");
+        loadPuzzleButton.addMenuListener(new LoadPuzzleMenuListener());
+
         mainMenuBar.add(openImageButton);
+        mainMenuBar.add(loadPuzzleButton);
         mainMenuBar.add(new MainMenuItem("Item with submenu", new String[]{"Item 1", "Item 2", "Item 3"}));
 
         // TODO fix Container height issue
@@ -259,6 +263,33 @@ public class PicSaw extends JFrame {
         public void menuCanceled(MenuEvent e) {}
     }
 
+    private class LoadPuzzleMenuListener implements MenuListener {
+        public void menuSelected(MenuEvent e) {
+            FileDialog picker = new FileDialog(PicSaw.this);
+            picker.setFilenameFilter(new DatFileFilter());
+            picker.setVisible(true);
+
+            String filename = picker.getFile();
+            String dir = picker.getDirectory();
+
+            if (filename != null) {
+                try {
+                ObjectInputStream ois = new ObjectInputStream(new FileInputStream(dir + filename));
+                ImagePuzzleFrame frame = (ImagePuzzleFrame) ois.readObject();
+                frame.setVisible(true);
+                PicSaw.this.setVisible(false);
+                ois.close();
+                } catch (Exception exc) {
+                    exc.printStackTrace();
+                }
+            }
+        }
+
+        public void menuDeselected(MenuEvent e) {}
+
+        public void menuCanceled(MenuEvent e) {}
+    }
+
     /**
      * Returns a FileName filter for filtering out all file types except for image files
      * <p>
@@ -270,6 +301,15 @@ public class PicSaw extends JFrame {
     private class ImageFileFilter implements FilenameFilter {
         public boolean accept (File dir, String name) {
             if (name.matches(".+\\.(jpg|jpeg|png|gif)$")) {
+                return true;
+            }
+            return true;
+        }
+    }
+
+    private class DatFileFilter implements FilenameFilter {
+        public boolean accept (File dir, String name) {
+            if (name.matches(".+\\.(dat|data)$")) {
                 return true;
             }
             return true;

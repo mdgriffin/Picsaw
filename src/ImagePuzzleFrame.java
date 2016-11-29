@@ -11,6 +11,7 @@ import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.URISyntaxException;
 import java.util.Random;
+import java.beans.XMLEncoder;
 
 public class ImagePuzzleFrame extends JFrame {
     private Container mainPane;
@@ -105,6 +106,8 @@ public class ImagePuzzleFrame extends JFrame {
         File file = new File(imageSrc);
         FileInputStream fis = new FileInputStream(file);
         BufferedImage srcImage = ImageIO.read(fis);
+
+        System.out.println("Constructor called");
 
         int scaledWidth = 600;
         int scaledHeight = (int)((double)scaledWidth / (double)srcImage.getWidth() * srcImage.getHeight());
@@ -302,15 +305,13 @@ public class ImagePuzzleFrame extends JFrame {
         String filename = picker.getFile();
 
         if (!filename.endsWith(".dat")) {
-            filename += ".dat";
+            filename += ".data";
         }
 
         File savedFile = new File(filePath + filename);
         FileOutputStream  outFileStream	= new FileOutputStream(savedFile);
         ObjectOutputStream objectOut = new ObjectOutputStream(outFileStream);
-
         objectOut.writeObject(this);
-
         objectOut.close();
     }
 
@@ -321,7 +322,6 @@ public class ImagePuzzleFrame extends JFrame {
 
     private class SaveButtonListener implements  MenuListener {
         public void menuSelected(MenuEvent e) {
-            System.out.println("Save button clicked");
             try {
                 savePuzzle();
             } catch (Exception exc) {
