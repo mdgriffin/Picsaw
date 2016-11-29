@@ -229,8 +229,6 @@ public class ImagePuzzleFrame extends JFrame {
         return true;
     }
 
-
-
     /**
      * This method generates a random sequence of integers in a range
      * from 0 up to the value supplied in the seqLen parameter
@@ -297,16 +295,21 @@ public class ImagePuzzleFrame extends JFrame {
      */
 
     private void savePuzzle () throws Exception {
-        // generate a random file name, or maybe use the date
-        // maybe ask the user to select a location in fileSystem
-        // limit to directories
-        File savedFile = new File("PuzzleFrame.data");
+        FileDialog picker = new FileDialog(ImagePuzzleFrame.this, "Save Puzzle", FileDialog.SAVE);
+        picker.setVisible(true);
+
+        String filePath = picker.getDirectory();
+        String filename = picker.getFile();
+
+        if (!filename.endsWith(".dat")) {
+            filename += ".dat";
+        }
+
+        File savedFile = new File(filePath + filename);
         FileOutputStream  outFileStream	= new FileOutputStream(savedFile);
         ObjectOutputStream objectOut = new ObjectOutputStream(outFileStream);
 
         objectOut.writeObject(this);
-
-        System.out.println("saved file");
 
         objectOut.close();
     }
