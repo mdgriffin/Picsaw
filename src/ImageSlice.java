@@ -10,13 +10,14 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-public class ImageSlice extends JLabel {
+public class ImageSlice extends JLabel implements Cloneable {
     private boolean selected = false;
+    private ImagePuzzleFrame parent;
+    private ImageIcon imagePiece;
     private int xPos;
     private int yPos;
     private int currentXPos;
     private int currentYPos;
-    private ImagePuzzleFrame parent;
 
     /**
      * Creates a new ImageSlice
@@ -33,6 +34,7 @@ public class ImageSlice extends JLabel {
         super(imagePiece);
 
         this.parent = parent;
+        this.imagePiece = imagePiece;
 
         this.xPos = xPos;
         this.yPos = yPos;
@@ -117,6 +119,17 @@ public class ImageSlice extends JLabel {
             return true;
         }
         return false;
+    }
+
+    /*
+    public ImageSlice clone(this.parent, imagePiece,this.xPos, int yPos, int currentXPos, int currentYPos) {
+        //return new Foo(this.id, this.name); //for example
+        return new ImageSlice()
+    }
+    */
+
+    public ImageSlice clone (ImagePuzzleFrame parent) {
+        return new ImageSlice(parent, imagePiece, xPos, yPos, currentXPos, currentYPos);
     }
 
     /**

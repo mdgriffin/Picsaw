@@ -19,8 +19,6 @@ public class ImagePuzzleFrame extends JFrame {
     PicSaw parent;
     JMenu exitBtn;
     JMenu saveBtn;
-    private int rows;
-    private  int cols;
     ImageSlice[] imageSlices;
     private ImageSlice sourceSlice;
     private ImageSlice destSlice;
@@ -39,12 +37,48 @@ public class ImagePuzzleFrame extends JFrame {
 
     public ImagePuzzleFrame(PicSaw parent, java.net.URI imageSrc, int rows, int cols) {
         this.parent = parent;
-
-        this.rows = rows;
-        this.cols = cols;
-
         imageSlices = new ImageSlice[rows * cols];
 
+        setUpFrame();
+
+        // splitting the image into slices and generating the grid
+        try {
+            generatePuzzleGrid(imageSrc, rows, cols);
+        } catch (Exception exc) {
+            exc.printStackTrace();
+        }
+
+        pack();
+
+        // centers the Frame
+        setLocationRelativeTo(null);
+    }
+
+
+    public ImagePuzzleFrame(PicSaw parent, ImageSlice[] imageSlices) {
+        this.parent = parent;
+        this.imageSlices = imageSlices;
+
+        setUpFrame();
+
+        GridBagConstraints gridConstraints = new GridBagConstraints();
+
+        for (int i = 0; i < imageSlices.length; i++) {
+            gridConstraints.gridx = imageSlices[i].getCurrentXPos();
+            gridConstraints.gridy = imageSlices[i].getCurrentYPos();
+
+
+            imagePane.add(imageSlices[i].clone(this), gridConstraints);
+        }
+
+        pack();
+
+        // centers the Frame
+        setLocationRelativeTo(null);
+
+    }
+
+    private void setUpFrame () {
         setTitle("PicSaw - Image Puzzle Game");
         setResizable(false);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -55,12 +89,12 @@ public class ImagePuzzleFrame extends JFrame {
         setJMenuBar(mainMenuBar);
 
         exitBtn = new JMenu("Exit");
-        exitBtn.addMenuListener(new ExitButtonListener());
         mainMenuBar.add(exitBtn);
+        exitBtn.addMenuListener(new ExitButtonListener());
 
         saveBtn = new JMenu("Save");
-        saveBtn.addMenuListener(new SaveButtonListener());
         mainMenuBar.add(saveBtn);
+        saveBtn.addMenuListener(new SaveButtonListener());
 
         imagePane = new Container();
 
@@ -69,18 +103,6 @@ public class ImagePuzzleFrame extends JFrame {
         imagePane.setLayout(gl);
 
         mainPane.add(imagePane);
-
-        // splitting the image into slices and generating the grid
-        try {
-            generatePuzzleGrid(imageSrc);
-        } catch (Exception exc) {
-            exc.printStackTrace();
-        }
-
-        pack();
-
-        // centers the Frame
-        setLocationRelativeTo(null);
     }
 
     /**
@@ -98,7 +120,7 @@ public class ImagePuzzleFrame extends JFrame {
      * @throws URISyntaxException
      */
 
-    private void generatePuzzleGrid (java.net.URI imageSrc) throws IOException, URISyntaxException {
+    private void generatePuzzleGrid (java.net.URI imageSrc, int rows, int cols) throws IOException, URISyntaxException {
         int[] randomSeq = randomIntSequence(rows * cols);
         GridBagConstraints gridConstraints = new GridBagConstraints();
         BufferedImage[] bufferedImages = new BufferedImage[rows * cols];
@@ -106,8 +128,6 @@ public class ImagePuzzleFrame extends JFrame {
         File file = new File(imageSrc);
         FileInputStream fis = new FileInputStream(file);
         BufferedImage srcImage = ImageIO.read(fis);
-
-        System.out.println("Constructor called");
 
         int scaledWidth = 600;
         int scaledHeight = (int)((double)scaledWidth / (double)srcImage.getWidth() * srcImage.getHeight());
@@ -311,7 +331,7 @@ public class ImagePuzzleFrame extends JFrame {
         File savedFile = new File(filePath + filename);
         FileOutputStream  outFileStream	= new FileOutputStream(savedFile);
         ObjectOutputStream objectOut = new ObjectOutputStream(outFileStream);
-        objectOut.writeObject(this);
+        objectOut.writeObject(imageSlices);
         objectOut.close();
     }
 

@@ -275,7 +275,9 @@ public class PicSaw extends JFrame {
             if (filename != null) {
                 try {
                 ObjectInputStream ois = new ObjectInputStream(new FileInputStream(dir + filename));
-                ImagePuzzleFrame frame = (ImagePuzzleFrame) ois.readObject();
+                ImageSlice[] imageSlices = (ImageSlice[]) ois.readObject();
+
+                ImagePuzzleFrame frame = new ImagePuzzleFrame(PicSaw.this, imageSlices);
                 frame.setVisible(true);
                 PicSaw.this.setVisible(false);
                 ois.close();
