@@ -121,12 +121,11 @@ public class ImageSlice extends JLabel implements Cloneable {
         return false;
     }
 
-    /*
-    public ImageSlice clone(this.parent, imagePiece,this.xPos, int yPos, int currentXPos, int currentYPos) {
-        //return new Foo(this.id, this.name); //for example
-        return new ImageSlice()
-    }
-    */
+    /**
+     *
+     * @param parent The parent ImagePuzzleFrame of the new ImageSlice
+     * @return A new instance of this object with the same aatributes
+     */
 
     public ImageSlice clone (ImagePuzzleFrame parent) {
         return new ImageSlice(parent, imagePiece, xPos, yPos, currentXPos, currentYPos);

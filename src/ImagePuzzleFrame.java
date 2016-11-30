@@ -54,6 +54,12 @@ public class ImagePuzzleFrame extends JFrame {
         setLocationRelativeTo(null);
     }
 
+    /**
+     *  Creates a new PuzzleFrame with the supplied ImageSlice elements
+     *
+     * @param parent The parent frame that instantiated this element
+     * @param imageSlices An array of ImageSlice elements
+     */
 
     public ImagePuzzleFrame(PicSaw parent, ImageSlice[] imageSlices) {
         this.parent = parent;
