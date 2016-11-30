@@ -330,15 +330,17 @@ public class ImagePuzzleFrame extends JFrame {
         String filePath = picker.getDirectory();
         String filename = picker.getFile();
 
-        if (!filename.endsWith(".dat")) {
-            filename += ".data";
-        }
+        if (filename != null) {
+            if (!filename.endsWith(".dat")) {
+                filename += ".data";
+            }
 
-        File savedFile = new File(filePath + filename);
-        FileOutputStream  outFileStream	= new FileOutputStream(savedFile);
-        ObjectOutputStream objectOut = new ObjectOutputStream(outFileStream);
-        objectOut.writeObject(imageSlices);
-        objectOut.close();
+            File savedFile = new File(filePath + filename);
+            FileOutputStream  outFileStream	= new FileOutputStream(savedFile);
+            ObjectOutputStream objectOut = new ObjectOutputStream(outFileStream);
+            objectOut.writeObject(imageSlices);
+            objectOut.close();
+        }
     }
 
     /**
