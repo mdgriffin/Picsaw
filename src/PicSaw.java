@@ -68,9 +68,9 @@ public class PicSaw extends JFrame {
         mainMenuBar.add(openImageButton);
         mainMenuBar.add(loadPuzzleButton);
 
-        // TODO fix Container height issue
         JPanel difficultyPane = new JPanel();
         difficultyPane.setLayout(new FlowLayout());
+        difficultyPane.setMaximumSize(new Dimension(400, 100));
 
         mainPane.add(difficultyPane);
 
@@ -106,7 +106,7 @@ public class PicSaw extends JFrame {
         imageLabels = new JLabel[4];
         ImageGridMouseEvent mouseEvent = new ImageGridMouseEvent();
 
-        imagePane = new Container();
+        imagePane = new JPanel();
         imagePane.setLayout(new FlowLayout());
 
         for (int i = 0; i < imageUrls.length; i++) {
