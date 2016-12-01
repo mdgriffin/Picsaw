@@ -2,8 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="4815ac18-df39-4d81-8aca-69819e2aeb32" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/PicSaw.java" afterPath="$PROJECT_DIR$/src/PicSaw.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/ImagePuzzleFrame.java" afterPath="$PROJECT_DIR$/src/ImagePuzzleFrame.java" />
     </list>
     <ignored path="Picsaw.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -33,23 +32,23 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="PicSaw.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="PicSaw.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/PicSaw.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="238">
-              <caret line="72" column="0" selection-start-line="72" selection-start-column="0" selection-end-line="72" selection-end-column="0" />
+            <state relative-caret-position="323">
+              <caret line="62" column="34" selection-start-line="62" selection-start-column="34" selection-end-line="62" selection-end-column="34" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ImagePuzzleFrame.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="ImagePuzzleFrame.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/ImagePuzzleFrame.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="929">
-              <caret line="63" column="33" selection-start-line="63" selection-start-column="33" selection-end-line="63" selection-end-column="33" />
+            <state relative-caret-position="221">
+              <caret line="13" column="0" selection-start-line="13" selection-start-column="0" selection-end-line="13" selection-end-column="0" />
               <folding>
-                <element signature="e#0#12157#0" expanded="true" />
+                <element signature="e#0#12159#0" expanded="true" />
                 <element signature="imports" expanded="true" />
               </folding>
             </state>
@@ -59,7 +58,7 @@
       <file leaf-file-name="ImageSlice.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/ImageSlice.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="713">
+            <state relative-caret-position="2057">
               <caret line="125" column="70" selection-start-line="125" selection-start-column="70" selection-end-line="125" selection-end-column="70" />
               <folding>
                 <element signature="n#!!doc" expanded="true" />
@@ -85,8 +84,8 @@
         <option value="$PROJECT_DIR$/README.md" />
         <option value="$PROJECT_DIR$/.gitignore" />
         <option value="$PROJECT_DIR$/src/ImageSlice.java" />
-        <option value="$PROJECT_DIR$/src/ImagePuzzleFrame.java" />
         <option value="$PROJECT_DIR$/src/PicSaw.java" />
+        <option value="$PROJECT_DIR$/src/ImagePuzzleFrame.java" />
       </list>
     </option>
   </component>
@@ -840,12 +839,12 @@
       <workItem from="1479983044608" duration="3963000" />
       <workItem from="1480428956555" duration="5195000" />
       <workItem from="1480515097980" duration="6113000" />
-      <workItem from="1480587188065" duration="1563000" />
+      <workItem from="1480587188065" duration="1855000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="56658000" />
+    <option name="totallyTimeSpent" value="56950000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -938,7 +937,7 @@
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#0#12157#0" expanded="true" />
+            <element signature="e#0#12159#0" expanded="true" />
             <element signature="imports" expanded="true" />
           </folding>
         </state>
@@ -968,7 +967,7 @@
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#0#12157#0" expanded="true" />
+            <element signature="e#0#12159#0" expanded="true" />
             <element signature="imports" expanded="true" />
           </folding>
         </state>
@@ -1005,7 +1004,7 @@
         <state relative-caret-position="4896">
           <caret line="299" column="0" selection-start-line="299" selection-start-column="0" selection-end-line="299" selection-end-column="0" />
           <folding>
-            <element signature="e#0#12157#0" expanded="true" />
+            <element signature="e#0#12159#0" expanded="true" />
             <element signature="imports" expanded="true" />
           </folding>
         </state>
@@ -1063,7 +1062,7 @@
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#0#12157#0" expanded="true" />
+            <element signature="e#0#12159#0" expanded="true" />
             <element signature="imports" expanded="true" />
           </folding>
         </state>
@@ -1100,7 +1099,7 @@
         <state relative-caret-position="85">
           <caret line="16" column="7" selection-start-line="16" selection-start-column="7" selection-end-line="16" selection-end-column="7" />
           <folding>
-            <element signature="e#0#12157#0" expanded="true" />
+            <element signature="e#0#12159#0" expanded="true" />
             <element signature="imports" expanded="true" />
           </folding>
         </state>
@@ -1137,7 +1136,7 @@
         <state relative-caret-position="85">
           <caret line="16" column="7" selection-start-line="16" selection-start-column="7" selection-end-line="16" selection-end-column="7" />
           <folding>
-            <element signature="e#0#12157#0" expanded="true" />
+            <element signature="e#0#12159#0" expanded="true" />
             <element signature="imports" expanded="true" />
           </folding>
         </state>
@@ -1174,7 +1173,7 @@
         <state relative-caret-position="85">
           <caret line="16" column="7" selection-start-line="16" selection-start-column="7" selection-end-line="16" selection-end-column="7" />
           <folding>
-            <element signature="e#0#12157#0" expanded="true" />
+            <element signature="e#0#12159#0" expanded="true" />
             <element signature="imports" expanded="true" />
           </folding>
         </state>
@@ -1204,7 +1203,7 @@
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#0#12157#0" expanded="true" />
+            <element signature="e#0#12159#0" expanded="true" />
             <element signature="imports" expanded="true" />
           </folding>
         </state>
@@ -1297,9 +1296,17 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/PicSaw.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="323">
+          <caret line="62" column="34" selection-start-line="62" selection-start-column="34" selection-end-line="62" selection-end-column="34" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/ImageSlice.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="713">
+        <state relative-caret-position="2057">
           <caret line="125" column="70" selection-start-line="125" selection-start-column="70" selection-end-line="125" selection-end-column="70" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
@@ -1310,20 +1317,12 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/ImagePuzzleFrame.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="929">
-          <caret line="63" column="33" selection-start-line="63" selection-start-column="33" selection-end-line="63" selection-end-column="33" />
+        <state relative-caret-position="221">
+          <caret line="13" column="0" selection-start-line="13" selection-start-column="0" selection-end-line="13" selection-end-column="0" />
           <folding>
-            <element signature="e#0#12157#0" expanded="true" />
+            <element signature="e#0#12159#0" expanded="true" />
             <element signature="imports" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/PicSaw.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="238">
-          <caret line="72" column="0" selection-start-line="72" selection-start-column="0" selection-end-line="72" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>

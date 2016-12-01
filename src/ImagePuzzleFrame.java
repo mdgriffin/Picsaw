@@ -11,15 +11,14 @@ import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.URISyntaxException;
 import java.util.Random;
-import java.beans.XMLEncoder;
 
 public class ImagePuzzleFrame extends JFrame {
     private Container mainPane;
     private Container imagePane;
-    PicSaw parent;
-    JMenu exitBtn;
-    JMenu saveBtn;
-    ImageSlice[] imageSlices;
+    private PicSaw parent;
+    private JMenu exitBtn;
+    private JMenu saveBtn;
+    private ImageSlice[] imageSlices;
     private ImageSlice sourceSlice;
     private ImageSlice destSlice;
 
