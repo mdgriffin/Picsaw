@@ -59,15 +59,14 @@ public class PicSaw extends JFrame {
         JMenuBar mainMenuBar = new JMenuBar();
         setJMenuBar(mainMenuBar);
 
-        MainMenuItem openImageButton = new MainMenuItem("Open Image");
+        JMenu openImageButton = new JMenu("Open Image");
         openImageButton.addMenuListener(new OpenFileMenuListener());
 
-        MainMenuItem loadPuzzleButton = new MainMenuItem("Load Puzzle");
+        JMenu loadPuzzleButton = new JMenu("Load Puzzle");
         loadPuzzleButton.addMenuListener(new LoadPuzzleMenuListener());
 
         mainMenuBar.add(openImageButton);
         mainMenuBar.add(loadPuzzleButton);
-        mainMenuBar.add(new MainMenuItem("Item with submenu", new String[]{"Item 1", "Item 2", "Item 3"}));
 
         // TODO fix Container height issue
         JPanel difficultyPane = new JPanel();
@@ -204,30 +203,6 @@ public class PicSaw extends JFrame {
 
         public void mouseExited (MouseEvent e) {
             imageLabels[getEventSourceLabelIndex(e)].setBorder(BorderFactory.createMatteBorder(5, 5, 5, 5, Color.white));
-        }
-    }
-
-    /**
-     * Extends {@link JMenu} with a method that allows adding a String array of subitems
-     * to {@link JMenu}
-     */
-
-    private class MainMenuItem extends JMenu {
-        public MainMenuItem (String name) {
-            super(name);
-        }
-
-        public MainMenuItem (String name, String[] subMenuItems) {
-            super(name);
-            addSubMenuItems(subMenuItems);
-        }
-
-        private void addSubMenuItems (String[] items) {
-            JMenuItem item;
-
-            for (int i = 0; i < items.length; i++) {
-                add(new JMenuItem(items[i]));
-            }
         }
     }
 
