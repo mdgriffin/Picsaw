@@ -9,11 +9,15 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
+import java.awt.image.RescaleOp;
 
 public class ImageSlice extends JLabel implements Cloneable {
     private boolean selected = false;
     private ImagePuzzleFrame parent;
     private ImageIcon imagePiece;
+    private ImageIcon hoveredImagePiece = null;
+    private ImageIcon selectedImagePiece = null;
     private int xPos;
     private int yPos;
     private int currentXPos;
@@ -42,8 +46,6 @@ public class ImageSlice extends JLabel implements Cloneable {
         this.currentXPos = currentXPos;
         this.currentYPos = currentYPos;
 
-        this.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.white));
-
         this.addMouseListener(new ImageMouseEvent());
     }
 
@@ -68,9 +70,12 @@ public class ImageSlice extends JLabel implements Cloneable {
 
     public void setSelected () {
         if (selected) {
-            this.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.red));
+            if (selectedImagePiece == null) {
+                selectedImagePiece = alterImage(ImageSlice.this.imagePiece,new float[]{1.25f, 1.25f, 1.2f}, new float[]{0f,0f,0f,0f});
+            }
+            ImageSlice.this.setIcon(selectedImagePiece);
         } else {
-            this.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.white));
+            ImageSlice.this.setIcon(imagePiece);
         }
     }
 
@@ -131,6 +136,15 @@ public class ImageSlice extends JLabel implements Cloneable {
         return new ImageSlice(parent, imagePiece, xPos, yPos, currentXPos, currentYPos);
     }
 
+    private static ImageIcon alterImage(ImageIcon srcImage, float[] scaleFactors, float[] offsets) {
+        BufferedImage darkenedImage = (BufferedImage) srcImage.getImage();
+
+        RescaleOp op = new RescaleOp(scaleFactors, offsets, null);
+        darkenedImage = op.filter(darkenedImage, null);
+
+        return new ImageIcon(darkenedImage);
+    }
+
     /**
      * Extends the MouseAdapter class to handle mouse events on the Image Slice
      */
@@ -142,7 +156,11 @@ public class ImageSlice extends JLabel implements Cloneable {
         }
 
         public void mouseEntered (MouseEvent e) {
-            ImageSlice.this.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.green));
+            if (hoveredImagePiece == null) {
+                hoveredImagePiece = alterImage(ImageSlice.this.imagePiece, new float[]{.75f, .75f, .75f}, new float[]{0f,0f,0f, 0f});
+            }
+            ImageSlice.this.setIcon(hoveredImagePiece);
+
         }
 
         public void mouseExited (MouseEvent e) {
