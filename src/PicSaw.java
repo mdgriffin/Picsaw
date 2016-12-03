@@ -25,6 +25,7 @@ import javax.swing.event.MenuListener;
 public class PicSaw extends JFrame {
     private Container mainPane;
     private Container imagePane;
+    private JMenu openImageButton;
     private JComboBox difficultySelect;
     private String[] imageUrls = new String[]{"images/img1.jpg", "images/img2.jpg", "images/img3.jpg", "images/img4.jpg"};
     private JLabel[] imageLabels;
@@ -59,7 +60,7 @@ public class PicSaw extends JFrame {
         JMenuBar mainMenuBar = new JMenuBar();
         setJMenuBar(mainMenuBar);
 
-        JMenu openImageButton = new JMenu("Open Image");
+        openImageButton = new JMenu("Open Image");
         openImageButton.addMenuListener(new OpenFileMenuListener());
 
         JMenu loadPuzzleButton = new JMenu("Load Puzzle");
@@ -214,7 +215,6 @@ public class PicSaw extends JFrame {
      *  passing in the selected file source as a URI.
      */
 
-    // TODO menu currently buggy, sometimes opens unexpectedly
     private class OpenFileMenuListener implements MenuListener {
         public void menuSelected(MenuEvent e) {
             FileDialog picker = new FileDialog(PicSaw.this);
@@ -230,6 +230,7 @@ public class PicSaw extends JFrame {
                 puzzle.setVisible(true);
 
                 PicSaw.this.setVisible(false);
+
             }
         }
 
@@ -237,6 +238,14 @@ public class PicSaw extends JFrame {
 
         public void menuCanceled(MenuEvent e) {}
     }
+
+    /**
+     *  Implements the {@link MenuListener} to listen for menu events on the Load Puzzle Menu item
+     *  <p>
+     *  Opens a {@link FileDialog} and allows the user to select a previously saved file from their system
+     *  Open a saved filed has been selected a {@link ImagePuzzleFrame} frame will be instantiated
+     *  With the ImageSlices stored in the file passed into the constructor
+     */
 
     private class LoadPuzzleMenuListener implements MenuListener {
         public void menuSelected(MenuEvent e) {
@@ -260,6 +269,8 @@ public class PicSaw extends JFrame {
                     exc.printStackTrace();
                 }
             }
+
+
         }
 
         public void menuDeselected(MenuEvent e) {}

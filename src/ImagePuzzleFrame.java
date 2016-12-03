@@ -1,7 +1,6 @@
 /**
  *  <h1>This class defines an Image Jigsaw puzzle</h1>
  */
-// TODO the scaled image height should not exceed the height of the window - the frame borders
 import javax.swing.*;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
@@ -71,20 +70,29 @@ public class ImagePuzzleFrame extends JFrame {
     public ImagePuzzleFrame(PicSaw parent, ImageSlice[] imageSlices) {
         this.parent = parent;
         this.imageSlices = imageSlices;
+        int numRows = 0;
+        int yPos;
 
         setUpFrame();
 
         GridBagConstraints gridConstraints = new GridBagConstraints();
 
         for (int i = 0; i < imageSlices.length; i++) {
-            gridConstraints.gridx = imageSlices[i].getCurrentXPos();
-            gridConstraints.gridy = imageSlices[i].getCurrentYPos();
+            yPos = imageSlices[i].getCurrentYPos();
 
+            if (yPos > numRows) {
+                numRows = yPos;
+            }
+
+            gridConstraints.gridx = imageSlices[i].getCurrentXPos();
+            gridConstraints.gridy = yPos;
 
             imagePane.add(imageSlices[i].clone(this), gridConstraints);
         }
 
-        // TODO Calculate the size of the slices
+        // TODO Untested, Test by loading file
+        frameHeight = imageSlices[0].getHeight() * ++numRows;
+
         layeredPane.setPreferredSize(new Dimension(frameWidth, frameHeight));
         imagePane.setBounds(0, 0, frameWidth, frameHeight);
 
@@ -391,7 +399,6 @@ public class ImagePuzzleFrame extends JFrame {
      * @throws Exception
      */
 
-    // TODO Save no longer working
     private void savePuzzle () throws Exception {
         FileDialog picker = new FileDialog(ImagePuzzleFrame.this, "Save Puzzle", FileDialog.SAVE);
         picker.setVisible(true);
