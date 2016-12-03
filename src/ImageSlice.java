@@ -15,19 +15,14 @@ import java.awt.image.RescaleOp;
 import java.io.Serializable;
 
 public class ImageSlice extends JLabel implements Cloneable {
-    private boolean selected = false;
     private ImagePuzzleFrame parent;
     private ImageIcon imagePiece;
-    //private ImageIcon hoveredImagePiece = null;
-    //private ImageIcon selectedImagePiece = null;
     private int xPos;
     private int yPos;
     private int currentXPos;
     private int currentYPos;
-    //
     private int dragInitialX = 0;
     private int dragInitialY = 0;
-
     private static boolean sliceDragging = false;
 
     /**
@@ -55,38 +50,6 @@ public class ImageSlice extends JLabel implements Cloneable {
 
         addMouseListener(new ImageMouseEvent());
         addMouseMotionListener(new ImageMouseMotionEvent());
-    }
-
-    /**
-     * Sets the selected property of the ImageSlice
-     *
-     * @param selected A boolean representing the whether the image slice is selected
-     */
-
-    public void setSelected (boolean selected) {
-        this.selected = selected;
-        setSelected();
-    }
-
-    /**
-     *  Sets the border around the ImageSlice
-     *  <p>
-     *  Checks the selected attribute of the ImageSlice, if the ImageSlice
-     *  is selected it sets a red border around the slice, otherwise a white
-     *  border is created around the slice
-     */
-
-    public void setSelected () {
-        /*
-        if (selected) {
-            if (selectedImagePiece == null) {
-                selectedImagePiece = alterImage(ImageSlice.this.imagePiece,new float[]{1.25f, 1.25f, 1.2f}, new float[]{0f,0f,0f,0f});
-            }
-            ImageSlice.this.setIcon(selectedImagePiece);
-        } else {
-            ImageSlice.this.setIcon(imagePiece);
-        }
-        */
     }
 
     /**
@@ -147,24 +110,22 @@ public class ImageSlice extends JLabel implements Cloneable {
     }
 
     /**
-     * Alters an ImageIcon image to create darker and lighter variants
+     * Creates or removes a border around the image slice to indicate whether
+     * the image slice is highlighted or not
      *
-     * @param srcImage
-     * @param scaleFactors
-     * @param offsets
-     * @return A new Instance of ImageIcon set the to the altered image
+     * @param isHighlighted A boolean indicating whether the imageSlice should be highlighted
      */
 
-    /*
-    private static ImageIcon alterImage(ImageIcon srcImage, float[] scaleFactors, float[] offsets) {
-        BufferedImage darkenedImage = (BufferedImage) srcImage.getImage();
 
-        RescaleOp op = new RescaleOp(scaleFactors, offsets, null);
-        darkenedImage = op.filter(darkenedImage, null);
+    public void highlight (boolean isHighlighted) {
+        setPreferredSize(new Dimension(getWidth(), getHeight()));
 
-        return new ImageIcon(darkenedImage);
+        if (isHighlighted) {
+            setBorder(BorderFactory.createMatteBorder(2, 2, 2, 2, Color.green));
+        } else {
+            setBorder(BorderFactory.createEmptyBorder());
+        }
     }
-    */
 
     /**
      * Extends the MouseAdapter class to handle mouse events on the Image Slice
@@ -172,14 +133,9 @@ public class ImageSlice extends JLabel implements Cloneable {
 
     private class ImageMouseEvent extends MouseAdapter {
 
-
-
         public void mousePressed (MouseEvent e) {
-            //parent.sliceSelected(ImageSlice.this);
-
             sliceDragging = true;
 
-            System.out.println();
             dragInitialX = e.getX();
             dragInitialY = e.getY();
             ImageSlice.this.parent.sliceDragStart(ImageSlice.this, (int)ImageSlice.this.getLocation().getX(), (int)ImageSlice.this.getLocation().getY());
@@ -191,32 +147,27 @@ public class ImageSlice extends JLabel implements Cloneable {
         }
 
         public void mouseEntered (MouseEvent e) {
-            /*
-            if (hoveredImagePiece == null) {
-                hoveredImagePiece = alterImage(ImageSlice.this.imagePiece, new float[]{.75f, .75f, .75f}, new float[]{0f,0f,0f, 0f});
-            }
-            ImageSlice.this.setIcon(hoveredImagePiece);
-            */
-            //ImageSlice.parent.dr
+            highlight(true);
+
             if (sliceDragging) {
-                System.out.println("Mouse Entered");
                 ImageSlice.this.parent.setDestSlice(ImageSlice.this);
             }
 
         }
 
         public void mouseExited (MouseEvent e) {
-            /*
-            setSelected();
-            */
+            highlight(false);
+
             if (sliceDragging) {
-                System.out.println("Exited");
                 ImageSlice.this.parent.setDestSlice(null);
             }
         }
 
     }
 
+    /**
+     * Extends MouseMotionAdapter to handle mouse motion events
+     */
 
     private class ImageMouseMotionEvent extends MouseMotionAdapter {
         public void mouseDragged(MouseEvent e) {

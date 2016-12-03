@@ -192,7 +192,7 @@ public class PicSaw extends JFrame {
                 puzzle.setVisible(true);
                 PicSaw.this.setVisible(false);
             } catch (URISyntaxException exc) {
-                System.out.println(exc);
+                exc.printStackTrace();
             }
         }
 

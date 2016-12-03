@@ -95,6 +95,10 @@ public class ImagePuzzleFrame extends JFrame {
 
     }
 
+    /**
+     * Sets up the JFrame, prevents duplicate code in the two constructor methods
+     */
+
     private void setUpFrame () {
         setTitle("PicSaw - Image Puzzle Game");
         setResizable(false);
@@ -182,9 +186,16 @@ public class ImagePuzzleFrame extends JFrame {
         }
     }
 
-    public void sliceDragStart (ImageSlice slice, int mouseX, int mouseY) {
-        System.out.println("Drag Start");
+    /**
+     * Called when the ImageSlice has begun to be dragged
+     *
+     * @param slice   The ImageSlice that is being dragged
+     * @param mouseX  The x co-ordinate of the ImageSlice Drag Event
+     * @param mouseY  The y co-ordinate of the ImageSlice Drag Event
+     * @param mouseY  The y co-ordinate of the ImageSlice Drag Event
+     */
 
+    public void sliceDragStart (ImageSlice slice, int mouseX, int mouseY) {
         sourceSlice = slice;
 
         slice.setVisible(false);
@@ -197,9 +208,13 @@ public class ImagePuzzleFrame extends JFrame {
         layeredPane.add(dragLayer, JLayeredPane.DRAG_LAYER);
     }
 
-    public void sliceDragEnd (ImageSlice slice) {
-        System.out.println("slice drag end");
+    /**
+     * Called when the Dragged Image Slice has been released
+     *
+     * @param slice The slice was being dragged
+     */
 
+    public void sliceDragEnd (ImageSlice slice) {
         slice.setVisible(true);
 
         // remove the drag layer
@@ -207,10 +222,12 @@ public class ImagePuzzleFrame extends JFrame {
         dragLayer = null;
 
         if (sourceSlice != null && destSlice != null) {
-            System.out.println("checking slices");
-
             // both slices are set, we can now reorder board
             swapGridItems(sourceSlice, destSlice);
+
+            // Removed the Highlighted state
+            sourceSlice.highlight(false);
+            destSlice.highlight(false);
 
             // once the board is reordered
             sourceSlice = null;
@@ -232,11 +249,24 @@ public class ImagePuzzleFrame extends JFrame {
         repaint();
     }
 
+    /**
+     * This method is called from child slices to indicate that they are being dragged
+     *
+     * @param mouseX The x co-ordinate of the ImageSlice Drag Event
+     * @param mouseY The y co-ordinate of the ImageSlice Drag Event
+     */
+
     public void sliceDragging (int mouseX, int mouseY) {
         if (dragLayer != null) {
             dragLayer.setLocation(mouseX, mouseY);
         }
     }
+
+    /**
+     * Setter method to set the destination slice attribute
+     *
+     * @param slice The imageSlice to be set as the destination slice
+     */
 
     public void setDestSlice (ImageSlice slice) {
         destSlice = slice;
@@ -304,6 +334,7 @@ public class ImagePuzzleFrame extends JFrame {
      *  @param seqLen  The length of the sequence and the max value in the sequence range
      *  @return        A randomly ordered int array
      */
+
     public static int[] randomIntSequence (int seqLen) {
         int[] seq = new int[seqLen];
         Random random = new Random();
