@@ -14,6 +14,7 @@ import java.util.Random;
 
 public class ImagePuzzleFrame extends JFrame {
     private Container mainPane;
+    private JLayeredPane layeredPane;
     private Container imagePane;
     private PicSaw parent;
     private JMenu exitBtn;
@@ -21,6 +22,10 @@ public class ImagePuzzleFrame extends JFrame {
     private ImageSlice[] imageSlices;
     private ImageSlice sourceSlice;
     private ImageSlice destSlice;
+    private JLabel dragLayer = null;
+    private int frameWidth = 600;
+    private int frameHeight = 600;
+
 
     /**
      *  Create a new ImagePuzzleFrame from the provided image source URI
@@ -46,6 +51,9 @@ public class ImagePuzzleFrame extends JFrame {
         } catch (Exception exc) {
             exc.printStackTrace();
         }
+
+        layeredPane.setPreferredSize(new Dimension(frameWidth, frameHeight));
+        imagePane.setBounds(0, 0, frameWidth, frameHeight);
 
         pack();
 
@@ -76,6 +84,10 @@ public class ImagePuzzleFrame extends JFrame {
             imagePane.add(imageSlices[i].clone(this), gridConstraints);
         }
 
+        // TODO Calculate the size of the slices
+        layeredPane.setPreferredSize(new Dimension(frameWidth, frameHeight));
+        imagePane.setBounds(0, 0, frameWidth, frameHeight);
+
         pack();
 
         // centers the Frame
@@ -102,13 +114,19 @@ public class ImagePuzzleFrame extends JFrame {
         saveBtn.addMenuListener(new SaveButtonListener());
 
         imagePane = new Container();
+        imagePane.setBackground(Color.red);
 
         GridBagLayout gl = new GridBagLayout();
 
         imagePane.setLayout(gl);
 
-        mainPane.add(imagePane);
+        layeredPane = new JLayeredPane();
+
+        mainPane.add(layeredPane);
+        layeredPane.add(imagePane, JLayeredPane.DEFAULT_LAYER);
     }
+
+
 
     /**
      * Sets of the image  puzzle gird
@@ -134,11 +152,10 @@ public class ImagePuzzleFrame extends JFrame {
         FileInputStream fis = new FileInputStream(file);
         BufferedImage srcImage = ImageIO.read(fis);
 
-        int scaledWidth = 600;
-        int scaledHeight = (int)((double)scaledWidth / (double)srcImage.getWidth() * srcImage.getHeight());
+        frameHeight = (int)((double)frameWidth / (double)srcImage.getWidth() * srcImage.getHeight());
 
-        int sliceWidth = scaledWidth / cols;
-        int sliceHeight = scaledHeight / rows;
+        int sliceWidth = frameWidth / cols;
+        int sliceHeight = frameHeight / rows;
 
         int srcSliceWidth = srcImage.getWidth() / cols;
         int srcSliceHeight = srcImage.getHeight() / rows;
@@ -165,28 +182,35 @@ public class ImagePuzzleFrame extends JFrame {
         }
     }
 
-    /**
-     * This method is used to set the two currently selected {@link ImageSlice} elements
-     * The two elements positions are then swapped and a method is called to check if the
-     *  board has been solved
-     *
-     * @param slice The {@link ImageSlice} that has been selected
-     */
+    public void sliceDragStart (ImageSlice slice, int mouseX, int mouseY) {
+        System.out.println("Drag Start");
 
-    public void sliceSelected (ImageSlice slice) {
-        if  (sourceSlice == null && destSlice == null) {
-            sourceSlice = slice;
-            sourceSlice.setSelected(true);
-        } else if (sourceSlice != null && destSlice == null) {
-            destSlice = slice;
-            destSlice.setSelected(true);
+        sourceSlice = slice;
+
+        slice.setVisible(false);
+
+        dragLayer = new JLabel(slice.getIcon());
+        dragLayer.setSize(slice.getSize());
+
+        dragLayer.setLocation(mouseX, mouseY);
+
+        layeredPane.add(dragLayer, JLayeredPane.DRAG_LAYER);
+    }
+
+    public void sliceDragEnd (ImageSlice slice) {
+        System.out.println("slice drag end");
+
+        slice.setVisible(true);
+
+        // remove the drag layer
+        layeredPane.remove(dragLayer);
+        dragLayer = null;
+
+        if (sourceSlice != null && destSlice != null) {
+            System.out.println("checking slices");
 
             // both slices are set, we can now reorder board
             swapGridItems(sourceSlice, destSlice);
-
-            // remove the selected state
-            sourceSlice.setSelected(false);
-            destSlice.setSelected(false);
 
             // once the board is reordered
             sourceSlice = null;
@@ -196,14 +220,28 @@ public class ImagePuzzleFrame extends JFrame {
             // if correct, show a congratulation  message
             if (boardSolved()) {
                 JOptionPane.showMessageDialog(
-                    this,
-                    "Congratulations! You have solved the board",
-                    "Board Solved",
-                    JOptionPane.INFORMATION_MESSAGE
+                        this,
+                        "Congratulations! You have solved the board",
+                        "Board Solved",
+                        JOptionPane.INFORMATION_MESSAGE
                 );
             }
         }
+
+        revalidate();
+        repaint();
     }
+
+    public void sliceDragging (int mouseX, int mouseY) {
+        if (dragLayer != null) {
+            dragLayer.setLocation(mouseX, mouseY);
+        }
+    }
+
+    public void setDestSlice (ImageSlice slice) {
+        destSlice = slice;
+    }
+
 
     /**
      * This method swapped the grid position of two {@link ImageSlice} elements
@@ -322,6 +360,7 @@ public class ImagePuzzleFrame extends JFrame {
      * @throws Exception
      */
 
+    // TODO Save no longer working
     private void savePuzzle () throws Exception {
         FileDialog picker = new FileDialog(ImagePuzzleFrame.this, "Save Puzzle", FileDialog.SAVE);
         picker.setVisible(true);
@@ -358,6 +397,9 @@ public class ImagePuzzleFrame extends JFrame {
                     "Error while saving",
                     JOptionPane.ERROR_MESSAGE
                 );
+
+
+                exc.printStackTrace();
             }
 
         }
@@ -366,4 +408,6 @@ public class ImagePuzzleFrame extends JFrame {
 
         public void menuCanceled(MenuEvent e) {}
     }
+
+
 }

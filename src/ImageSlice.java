@@ -9,19 +9,26 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
 import java.awt.image.BufferedImage;
 import java.awt.image.RescaleOp;
+import java.io.Serializable;
 
 public class ImageSlice extends JLabel implements Cloneable {
     private boolean selected = false;
     private ImagePuzzleFrame parent;
     private ImageIcon imagePiece;
-    private ImageIcon hoveredImagePiece = null;
-    private ImageIcon selectedImagePiece = null;
+    //private ImageIcon hoveredImagePiece = null;
+    //private ImageIcon selectedImagePiece = null;
     private int xPos;
     private int yPos;
     private int currentXPos;
     private int currentYPos;
+    //
+    private int dragInitialX = 0;
+    private int dragInitialY = 0;
+
+    private static boolean sliceDragging = false;
 
     /**
      * Creates a new ImageSlice
@@ -46,7 +53,8 @@ public class ImageSlice extends JLabel implements Cloneable {
         this.currentXPos = currentXPos;
         this.currentYPos = currentYPos;
 
-        this.addMouseListener(new ImageMouseEvent());
+        addMouseListener(new ImageMouseEvent());
+        addMouseMotionListener(new ImageMouseMotionEvent());
     }
 
     /**
@@ -69,6 +77,7 @@ public class ImageSlice extends JLabel implements Cloneable {
      */
 
     public void setSelected () {
+        /*
         if (selected) {
             if (selectedImagePiece == null) {
                 selectedImagePiece = alterImage(ImageSlice.this.imagePiece,new float[]{1.25f, 1.25f, 1.2f}, new float[]{0f,0f,0f,0f});
@@ -77,6 +86,7 @@ public class ImageSlice extends JLabel implements Cloneable {
         } else {
             ImageSlice.this.setIcon(imagePiece);
         }
+        */
     }
 
     /**
@@ -136,6 +146,16 @@ public class ImageSlice extends JLabel implements Cloneable {
         return new ImageSlice(parent, imagePiece, xPos, yPos, currentXPos, currentYPos);
     }
 
+    /**
+     * Alters an ImageIcon image to create darker and lighter variants
+     *
+     * @param srcImage
+     * @param scaleFactors
+     * @param offsets
+     * @return A new Instance of ImageIcon set the to the altered image
+     */
+
+    /*
     private static ImageIcon alterImage(ImageIcon srcImage, float[] scaleFactors, float[] offsets) {
         BufferedImage darkenedImage = (BufferedImage) srcImage.getImage();
 
@@ -144,6 +164,7 @@ public class ImageSlice extends JLabel implements Cloneable {
 
         return new ImageIcon(darkenedImage);
     }
+    */
 
     /**
      * Extends the MouseAdapter class to handle mouse events on the Image Slice
@@ -151,20 +172,55 @@ public class ImageSlice extends JLabel implements Cloneable {
 
     private class ImageMouseEvent extends MouseAdapter {
 
+
+
         public void mousePressed (MouseEvent e) {
-            parent.sliceSelected(ImageSlice.this);
+            //parent.sliceSelected(ImageSlice.this);
+
+            sliceDragging = true;
+
+            System.out.println();
+            dragInitialX = e.getX();
+            dragInitialY = e.getY();
+            ImageSlice.this.parent.sliceDragStart(ImageSlice.this, (int)ImageSlice.this.getLocation().getX(), (int)ImageSlice.this.getLocation().getY());
+        }
+
+        public void mouseReleased(MouseEvent e) {
+            sliceDragging = false;
+            ImageSlice.this.parent.sliceDragEnd(ImageSlice.this);
         }
 
         public void mouseEntered (MouseEvent e) {
+            /*
             if (hoveredImagePiece == null) {
                 hoveredImagePiece = alterImage(ImageSlice.this.imagePiece, new float[]{.75f, .75f, .75f}, new float[]{0f,0f,0f, 0f});
             }
             ImageSlice.this.setIcon(hoveredImagePiece);
+            */
+            //ImageSlice.parent.dr
+            if (sliceDragging) {
+                System.out.println("Mouse Entered");
+                ImageSlice.this.parent.setDestSlice(ImageSlice.this);
+            }
 
         }
 
         public void mouseExited (MouseEvent e) {
+            /*
             setSelected();
+            */
+            if (sliceDragging) {
+                System.out.println("Exited");
+                ImageSlice.this.parent.setDestSlice(null);
+            }
+        }
+
+    }
+
+
+    private class ImageMouseMotionEvent extends MouseMotionAdapter {
+        public void mouseDragged(MouseEvent e) {
+            ImageSlice.this.parent.sliceDragging((int)ImageSlice.this.getLocation().getX() + e.getX() - dragInitialX, (int)ImageSlice.this.getLocation().getY() + e.getY() - dragInitialY);
         }
     }
 
