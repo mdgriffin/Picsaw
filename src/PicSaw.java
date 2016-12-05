@@ -1,3 +1,12 @@
+import java.awt.*;
+import java.awt.event.*;
+import java.io.*;
+import java.net.URI;
+import java.net.URISyntaxException;
+import javax.swing.*;
+import javax.swing.event.MenuEvent;
+import javax.swing.event.MenuListener;
+
 /**
  * <h1>Picsaw - Image Jigsaw puzzle game</h1>
  *
@@ -11,16 +20,6 @@
  * @version 0.5
  * @since   2016/11/22
  */
-
-
-import java.awt.*;
-import java.awt.event.*;
-import java.io.*;
-import java.net.URI;
-import java.net.URISyntaxException;
-import javax.swing.*;
-import javax.swing.event.MenuEvent;
-import javax.swing.event.MenuListener;
 
 public class PicSaw extends JFrame {
     private Container mainPane;

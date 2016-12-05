@@ -1,6 +1,3 @@
-/**
- *  <h1>This class defines an Image Jigsaw puzzle</h1>
- */
 import javax.swing.*;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
@@ -10,6 +7,10 @@ import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.URISyntaxException;
 import java.util.Random;
+
+/**
+ *  <h1>This class defines an Image Jigsaw puzzle</h1>
+ */
 
 public class ImagePuzzleFrame extends JFrame {
     private Container mainPane;

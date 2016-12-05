@@ -1,18 +1,15 @@
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
+
 /**
  *  <h1>This class extends to JLabel to define a single image slice</h1>
  *
  *  It holds the value of the current x and y position within the grid and
  *  the images slices correct x and y position
  */
-
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionAdapter;
-import java.awt.image.BufferedImage;
-import java.awt.image.RescaleOp;
-import java.io.Serializable;
 
 public class ImageSlice extends JLabel implements Cloneable {
     private ImagePuzzleFrame parent;
