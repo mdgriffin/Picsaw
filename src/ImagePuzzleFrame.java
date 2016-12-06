@@ -68,9 +68,17 @@ public class ImagePuzzleFrame extends JFrame {
      * @param imageSlices An array of ImageSlice elements
      */
 
-    public ImagePuzzleFrame(PicSaw parent, ImageSlice[] imageSlices) {
+    /**
+     *  Creates a new PuzzleFrame with the supplied SerializedImageSlices
+     *
+     * @param parent                  The parent frame that instantiated this element
+     * @param serializedImageSlices   An array of ImageSlice elements
+     */
+
+    public ImagePuzzleFrame(PicSaw parent, SerializedImageSlice[] serializedImageSlices) {
         this.parent = parent;
-        this.imageSlices = imageSlices;
+        this.imageSlices = new ImageSlice[serializedImageSlices.length];
+        SerializedImageSlice currentSlice;
         int numRows = 0;
         int yPos;
 
@@ -78,21 +86,23 @@ public class ImagePuzzleFrame extends JFrame {
 
         GridBagConstraints gridConstraints = new GridBagConstraints();
 
-        for (int i = 0; i < imageSlices.length; i++) {
-            yPos = imageSlices[i].getCurrentYPos();
+        for (int i = 0; i < serializedImageSlices.length; i++) {
+            currentSlice = serializedImageSlices[i];
+
+            yPos = currentSlice.getCurrentYPos();
 
             if (yPos > numRows) {
                 numRows = yPos;
             }
 
-            gridConstraints.gridx = imageSlices[i].getCurrentXPos();
+            gridConstraints.gridx = currentSlice.getCurrentXPos();
             gridConstraints.gridy = yPos;
 
-            imagePane.add(imageSlices[i].clone(this), gridConstraints);
+            imageSlices[i] = new ImageSlice(this, currentSlice.getImagePiece(), currentSlice.getXPos(), currentSlice.getYPos(), currentSlice.getCurrentXPos(), currentSlice.getCurrentYPos());
+            imagePane.add(imageSlices[i], gridConstraints);
         }
 
-        // TODO Untested, Test by loading file
-        frameHeight = imageSlices[0].getHeight() * ++numRows;
+        frameHeight = serializedImageSlices[0].getImagePiece().getIconHeight() * ++numRows;
 
         layeredPane.setPreferredSize(new Dimension(frameWidth, frameHeight));
         imagePane.setBounds(0, 0, frameWidth, frameHeight);
@@ -138,8 +148,6 @@ public class ImagePuzzleFrame extends JFrame {
         mainPane.add(layeredPane);
         layeredPane.add(imagePane, JLayeredPane.DEFAULT_LAYER);
     }
-
-
 
     /**
      * Sets of the image  puzzle gird
@@ -401,6 +409,7 @@ public class ImagePuzzleFrame extends JFrame {
      */
 
     private void savePuzzle () throws Exception {
+        SerializedImageSlice[] serializedSlices = new SerializedImageSlice[imageSlices.length];
         FileDialog picker = new FileDialog(ImagePuzzleFrame.this, "Save Puzzle", FileDialog.SAVE);
         picker.setVisible(true);
 
@@ -412,10 +421,14 @@ public class ImagePuzzleFrame extends JFrame {
                 filename += ".data";
             }
 
+            for (int i = 0; i < serializedSlices.length; i++) {
+                serializedSlices[i] = imageSlices[i].getSerizalizedForm();
+            }
+
             File savedFile = new File(filePath + filename);
             FileOutputStream  outFileStream	= new FileOutputStream(savedFile);
             ObjectOutputStream objectOut = new ObjectOutputStream(outFileStream);
-            objectOut.writeObject(imageSlices);
+            objectOut.writeObject(serializedSlices);
             objectOut.close();
         }
     }
@@ -436,7 +449,6 @@ public class ImagePuzzleFrame extends JFrame {
                     "Error while saving",
                     JOptionPane.ERROR_MESSAGE
                 );
-
 
                 exc.printStackTrace();
             }

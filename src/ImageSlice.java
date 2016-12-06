@@ -99,11 +99,25 @@ public class ImageSlice extends JLabel implements Cloneable {
     /**
      *
      * @param parent The parent ImagePuzzleFrame of the new ImageSlice
-     * @return A new instance of this object with the same aatributes
+     * @return A new instance of this object with the same attributes
      */
 
+    /*
     public ImageSlice clone (ImagePuzzleFrame parent) {
         return new ImageSlice(parent, imagePiece, xPos, yPos, currentXPos, currentYPos);
+    }
+    */
+
+    /**
+     * Get a Serialized form the ImageSlice object
+     * <p>
+     * Used for saving and loading ImageSlices, simplifies this class and makes it easier to serialize
+     *
+     * @return A new instance of SerializedImageSlice with the same key attributes as the current instance of this ImageSlice
+     */
+
+    public SerializedImageSlice getSerizalizedForm () {
+        return new SerializedImageSlice(imagePiece, xPos, yPos, currentXPos, currentYPos);
     }
 
     /**
@@ -149,7 +163,6 @@ public class ImageSlice extends JLabel implements Cloneable {
             if (sliceDragging) {
                 ImageSlice.this.parent.setDestSlice(ImageSlice.this);
             }
-
         }
 
         public void mouseExited (MouseEvent e) {
