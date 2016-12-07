@@ -123,6 +123,9 @@ public class ImagePuzzleFrame extends JFrame {
         setResizable(false);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 
+        ImageIcon titleIcon = new ImageIcon(getClass().getResource("images/jigsaw-icon.png"));
+        setIconImage(titleIcon.getImage());
+
         mainPane = getContentPane();
 
         JMenuBar mainMenuBar = new JMenuBar();

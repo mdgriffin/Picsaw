@@ -51,6 +51,9 @@ public class PicSaw extends JFrame {
         // centers the Frame
         setLocationRelativeTo(null);
 
+        ImageIcon titleIcon = new ImageIcon(getClass().getResource("images/jigsaw-icon.png"));
+        setIconImage(titleIcon.getImage());
+
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 
         mainPane = getContentPane( );
@@ -110,7 +113,7 @@ public class PicSaw extends JFrame {
         imagePane.setLayout(new FlowLayout());
 
         for (int i = 0; i < imageUrls.length; i++) {
-            // loading an image
+            // loading an image from the class path
             java.net.URL imgURL = getClass().getResource(imageUrls[i]);
             //ImageIcon imgIco = new ImageIcon(imgURL, "Image Description");
             ImageIcon imgIco = new ImageIcon(new ImageIcon(imgURL).getImage().getScaledInstance(300, 200, Image.SCALE_DEFAULT));
